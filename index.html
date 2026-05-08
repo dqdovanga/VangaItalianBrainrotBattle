@@ -109,7 +109,7 @@
 
     .search-tools {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       align-items: center;
       gap: 8px;
       margin-bottom: 8px;
@@ -132,6 +132,38 @@
       font: inherit;
       font-size: 12px;
       outline: none;
+    }
+
+    .top-controls {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 14px;
+    }
+
+    .language-select {
+      width: 100%;
+      height: 38px;
+      border-radius: 14px;
+      border: 1px solid var(--line-strong);
+      background: rgba(12, 19, 31, 0.8);
+      color: var(--text);
+      padding: 0 12px;
+      font: inherit;
+      outline: none;
+    }
+
+    .random-btn {
+      height: 38px;
+      border: 0;
+      border-radius: 14px;
+      padding: 0 16px;
+      background: linear-gradient(180deg, var(--blue), var(--blue-strong));
+      color: var(--text);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
     }
 
     .selected-brainrot-label {
@@ -200,6 +232,14 @@
     .search-wrap.open .clear-search {
       opacity: 1;
       pointer-events: auto;
+    }
+
+    .search-wrap.has-selection .clear-search {
+      opacity: 1;
+      pointer-events: auto;
+      color: var(--selected-clear-color, #ffffff);
+      text-shadow: 0 0 10px var(--selected-clear-glow, rgba(255, 255, 255, 0.76));
+      font-weight: 900;
     }
 
     .card {
@@ -279,6 +319,11 @@
 
     .segmented button.accent-purple.active {
       background: linear-gradient(180deg, #c59dff, #8f64e6);
+    }
+
+    .segmented button.accent-top-secret.active {
+      background: linear-gradient(180deg, #d8b2ff, #a36aff);
+      color: #1d1028;
     }
 
     .segmented button.accent-light-yellow.active {
@@ -526,6 +571,13 @@
       justify-content: center;
     }
 
+    .quality-label {
+      min-height: 20px;
+      margin-top: 4px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
     .metric {
       min-height: 56px;
       display: flex;
@@ -557,6 +609,11 @@
 
     .accent-purple {
       color: #b68cff;
+    }
+
+    .accent-top-secret {
+      color: #d4a8ff;
+      text-shadow: var(--top-secret-sparkles, 0 0 10px rgba(212, 168, 255, 0.35));
     }
 
     .accent-light-yellow {
@@ -608,10 +665,12 @@
 
     .accent-wave-sun {
       background-image: linear-gradient(180deg, #ffef7e 0%, #ffc85e 45%, #ff9937 100%);
+      animation: brainrotWaveUp 4.8s linear infinite;
     }
 
     .accent-wave-ocean {
       background-image: linear-gradient(180deg, #c7f6ff 0%, #6cc3ff 38%, #16358f 100%);
+      animation: brainrotWaveUp 4.8s linear infinite;
     }
 
     .accent-vanga {
@@ -637,6 +696,11 @@
 
     .action-btn.accent-purple {
       background: linear-gradient(180deg, #c59dff, #8f64e6);
+    }
+
+    .action-btn.accent-top-secret {
+      background: linear-gradient(180deg, #d8b2ff, #a36aff);
+      color: #1d1028;
     }
 
     .action-btn.accent-light-yellow {
@@ -693,6 +757,73 @@
       background: linear-gradient(120deg, #ff7b7b, #ffba66, #fff06e, #82ef9f, #7fd7ff, #a88dff, #ff8ddb);
       background-size: 220% 220%;
       animation: brainrotWave 6.2s linear infinite;
+    }
+
+    .action-btn.secondary-action {
+      margin-top: 8px;
+      background: rgba(12, 19, 31, 0.86);
+      border: 1px solid var(--line-strong);
+    }
+
+    .percent-section {
+      display: none;
+      margin-top: 12px;
+    }
+
+    .percent-section.show {
+      display: block;
+    }
+
+    .percent-result {
+      min-height: 26px;
+      margin-top: 10px;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .percent-search-wrap {
+      position: relative;
+    }
+
+    .percent-choice {
+      margin-top: 8px;
+      min-height: 20px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .timer-board {
+      width: min(1220px, 100%);
+      margin: 12px auto 0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .timer-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(24, 35, 56, 0.96), rgba(20, 30, 48, 0.94));
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+
+    .timer-title {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .timer-value {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-weight: 700;
+    }
+
+    .timer-value span {
+      color: #f8fbff;
+      text-shadow: 0 0 12px rgba(127, 215, 255, 0.36);
     }
 
     .search-results {
@@ -811,6 +942,26 @@
       animation: vangaSparkleFloat 1s ease-out forwards;
     }
 
+    .vanga-sparkle.square-sparkle {
+      border-radius: 2px;
+      background: rgba(212, 168, 255, 0.95);
+      box-shadow:
+        0 0 8px rgba(212, 168, 255, 0.74),
+        0 0 14px rgba(161, 104, 255, 0.55);
+    }
+
+    .brainrot-splash {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--splash-color, #7fd7ff);
+      box-shadow: 0 0 18px var(--splash-color, #7fd7ff);
+      pointer-events: none;
+      z-index: 999;
+      animation: brainrotSplash 720ms ease-out forwards;
+    }
+
     .brainrot-gray {
       color: #a9b2c3;
     }
@@ -825,6 +976,11 @@
 
     .brainrot-purple {
       color: #b68cff;
+    }
+
+    .brainrot-top-secret {
+      color: #d4a8ff;
+      text-shadow: var(--top-secret-sparkles, 0 0 10px rgba(212, 168, 255, 0.35));
     }
 
     .brainrot-light-yellow {
@@ -846,8 +1002,7 @@
     .brainrot-wave-black-white,
     .brainrot-wave-sun,
     .brainrot-wave-ocean,
-    .brainrot-rainbow,
-    .brainrot-top-secret {
+    .brainrot-rainbow {
       background-size: 220% 220%;
       color: transparent;
       -webkit-background-clip: text;
@@ -877,10 +1032,12 @@
 
     .brainrot-wave-sun {
       background-image: linear-gradient(180deg, #ffef7e 0%, #ffc85e 45%, #ff9937 100%);
+      animation: brainrotWaveUp 4.8s linear infinite;
     }
 
     .brainrot-wave-ocean {
       background-image: linear-gradient(180deg, #c7f6ff 0%, #6cc3ff 38%, #16358f 100%);
+      animation: brainrotWaveUp 4.8s linear infinite;
     }
 
     .brainrot-vanga {
@@ -892,8 +1049,17 @@
       background-image: linear-gradient(120deg, #ff7b7b 0%, #ffba66 18%, #fff06e 36%, #82ef9f 54%, #7fd7ff 72%, #a88dff 86%, #ff8ddb 100%);
     }
 
-    .brainrot-top-secret {
-      background-image: linear-gradient(120deg, #0f1117 0%, #4d0a0f 20%, #a8131d 44%, #ff4d4d 62%, #700d15 82%, #0f1117 100%);
+    .brainrot-exclusive-static {
+      background-image: linear-gradient(120deg, #ff7b7b 0%, #ffba66 18%, #fff06e 36%, #82ef9f 54%, #7fd7ff 72%, #a88dff 86%, #ff8ddb 100%);
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: none;
+    }
+
+    .brainrot-admin {
+      color: #d4a8ff;
+      text-shadow: 0 0 10px rgba(212, 168, 255, 0.35);
     }
 
     @keyframes brainrotWave {
@@ -903,6 +1069,16 @@
 
       100% {
         background-position: 200% 50%;
+      }
+    }
+
+    @keyframes brainrotWaveUp {
+      0% {
+        background-position: 50% 200%;
+      }
+
+      100% {
+        background-position: 50% 0%;
       }
     }
 
@@ -922,6 +1098,18 @@
       }
     }
 
+    @keyframes brainrotSplash {
+      0% {
+        transform: translate3d(-50%, -50%, 0) scale(0.4);
+        opacity: 0.95;
+      }
+
+      100% {
+        transform: translate3d(calc(-50% + var(--splash-x, 0px)), calc(-50% + var(--splash-y, 0px)), 0) scale(1.8);
+        opacity: 0;
+      }
+    }
+
     .empty-state {
       padding: 12px 14px;
       color: var(--muted);
@@ -930,6 +1118,10 @@
 
     @media (max-width: 1080px) {
       .app {
+        grid-template-columns: 1fr;
+      }
+
+      .timer-board {
         grid-template-columns: 1fr;
       }
     }
@@ -949,18 +1141,42 @@
   <main class="app">
     <section class="panel">
       <div class="section-head">
-        <h3>Inputs</h3>
+        <h3 data-i18n="inputs">Inputs</h3>
         <div class="badge" id="statusBadge">Invalid</div>
+      </div>
+
+      <div class="top-controls">
+        <div>
+          <label class="label" for="languageSelect" data-i18n="language">Language</label>
+          <select class="language-select" id="languageSelect">
+            <option value="ms">Malay</option>
+            <option value="fil">Filipino</option>
+            <option value="en" selected>England</option>
+            <option value="bg">Bulgarian</option>
+            <option value="de">German</option>
+            <option value="ro">Romanian</option>
+            <option value="ru">Russian</option>
+            <option value="zh">Chinese</option>
+            <option value="ja">Japanese</option>
+            <option value="es">Spanish</option>
+            <option value="it">Italian</option>
+            <option value="pt">Portuguese</option>
+            <option value="tr">Turkish</option>
+            <option value="el">Greek</option>
+            <option value="lt">Lithuanian</option>
+          </select>
+        </div>
+        <button class="random-btn" id="randomBtn" data-i18n="random">Random</button>
       </div>
 
       <div class="field">
         <label class="label" for="brainrotSearch">Brainrot</label>
         <div class="search-tools">
-          <label for="searchSizeSelect">List size</label>
+          <label for="searchSizeSelect" data-i18n="listSize">List size</label>
           <select class="search-size-select" id="searchSizeSelect">
-            <option value="small">Small</option>
-            <option value="medium" selected>Medium</option>
-            <option value="large">Large</option>
+            <option value="small" data-i18n="small">Small</option>
+            <option value="medium" selected data-i18n="medium">Medium</option>
+            <option value="large" data-i18n="large">Large</option>
           </select>
         </div>
         <div class="search-wrap">
@@ -972,89 +1188,114 @@
       </div>
 
       <div class="card">
-        <div class="subtle">Base Stat</div>
+        <div class="subtle" data-i18n="baseStat">Base Stat</div>
         <div class="stat-main stat-accent" id="baseStat">—</div>
         <div class="subtle" id="selectedUnit">$ / Fish</div>
       </div>
 
       <div class="card">
-        <div class="subtle">Mutation Total</div>
+        <div class="subtle" data-i18n="mutationTotal">Mutation Total</div>
         <div class="stat-main stat-accent" id="mutationTotal">0%</div>
-        <div class="subtle">stacked</div>
+        <div class="subtle" data-i18n="stacked">stacked</div>
       </div>
 
       <div class="divider"></div>
 
       <div class="meta-row">
-        <span class="label" style="margin: 0;">Rank</span>
-        <span class="subtle">+15% per rank</span>
+        <span class="label" style="margin: 0;" data-i18n="rank">Rank</span>
+        <span class="subtle" data-i18n="rankHint">+15% per rank</span>
       </div>
       <div class="segmented" id="rankSelector"></div>
 
       <div class="field">
-        <label class="label">Level</label>
+        <label class="label" data-i18n="level">Level</label>
         <div class="level-row">
           <button class="level-btn" id="levelDown">−</button>
           <input class="level-display" id="levelValue" type="number" min="1" step="1" value="1" inputmode="numeric">
           <button class="level-btn" id="levelUp">+</button>
         </div>
-        <div class="subtle">+50% per level after 1</div>
+        <div class="subtle" data-i18n="levelHint">+50% per level after 1</div>
       </div>
-
-      <button class="action-btn" id="calculateBtn">Calculate Stat</button>
     </section>
 
     <section class="panel">
       <div class="section-head" style="display:block;">
-        <h3 style="margin-bottom:8px;">Bonuses</h3>
-        <p class="subtle">Tap to toggle. Percentages stack (sum → multiplier).</p>
+        <h3 style="margin-bottom:8px;" data-i18n="bonuses">Bonuses</h3>
+        <p class="subtle" data-i18n="bonusHint">Tap to toggle. Percentages stack (sum to multiplier).</p>
       </div>
       <div class="field" style="margin-bottom: 18px;">
         <div class="meta-row" style="margin-bottom: 10px;">
-          <span class="label" style="margin: 0;">Traits</span>
+          <span class="label" style="margin: 0;" data-i18n="traits">Traits</span>
         </div>
         <div class="mutations-grid" id="traitsGrid"></div>
       </div>
       <div class="field" style="margin-bottom: 0;">
         <div class="meta-row" style="margin-bottom: 10px;">
-          <span class="label" style="margin: 0;">Mutations</span>
+          <span class="label" style="margin: 0;" data-i18n="mutations">Mutations</span>
         </div>
         <div class="mutations-grid" id="mutationsGrid"></div>
       </div>
     </section>
 
     <aside class="panel">
+      <button class="action-btn" id="calculateBtn" data-i18n="calculateStat">Calculate Stat</button>
       <div class="card result-card">
-        <div class="subtle">Final Stat</div>
+        <div class="subtle" data-i18n="finalStat">Final Stat</div>
         <div class="stat-main stat-accent" id="finalStat">—</div>
         <div class="subtle stat-accent" id="finalUnit">$ / Fish</div>
+        <div class="quality-label stat-accent" id="qualityLabel"></div>
+        <div class="percent-section" id="percentSection">
+          <div class="divider"></div>
+          <label class="label" for="percentSearch" data-i18n="percentBrainrot">Percent Brainrot</label>
+          <div class="percent-search-wrap">
+            <input id="percentSearch" class="search-input" type="text" placeholder="Search percent brainrot..." autocomplete="off">
+            <div class="search-results size-medium" id="percentResults"></div>
+          </div>
+          <div class="percent-choice" id="percentChoice"></div>
+          <button class="action-btn secondary-action" id="calculatePercentBtn" data-i18n="calculatePercent" style="display:none;">Calculate % Brainrot</button>
+          <div class="percent-result stat-accent" id="percentResult"></div>
+        </div>
       </div>
 
       <div class="divider"></div>
 
       <div class="card metric">
-        <span class="subtle">Rank multiplier</span>
+        <span class="subtle" data-i18n="rankMultiplier">Rank multiplier</span>
         <span class="metric-value stat-accent" id="rankMultiplier">—</span>
       </div>
 
       <div class="card metric">
-        <span class="subtle">Level multiplier</span>
+        <span class="subtle" data-i18n="levelMultiplier">Level multiplier</span>
         <span class="metric-value stat-accent" id="levelMultiplier">—</span>
       </div>
 
       <div class="card metric">
-        <span class="subtle">Mutation multiplier</span>
+        <span class="subtle" data-i18n="mutationMultiplier">Mutation multiplier</span>
         <span class="metric-value stat-accent" id="mutationMultiplier">—</span>
       </div>
 
       <div class="divider"></div>
 
       <div class="card metric">
-        <span class="subtle">Base × all multipliers</span>
+        <span class="subtle" data-i18n="formula">Base × all multipliers</span>
         <span class="metric-value stat-accent" id="formulaValue">—</span>
       </div>
     </aside>
   </main>
+  <section class="timer-board" id="timerBoard">
+    <div class="timer-card">
+      <div class="timer-title" data-i18n="aaMorning">1st AA</div>
+      <div class="timer-value" data-timer="aaMorning"></div>
+    </div>
+    <div class="timer-card">
+      <div class="timer-title" data-i18n="aaEvening">2nd AA</div>
+      <div class="timer-value" data-timer="aaEvening"></div>
+    </div>
+    <div class="timer-card">
+      <div class="timer-title" data-i18n="tacoTuesday">Taco Tuesday (SCRAPPED)</div>
+      <div class="timer-value" data-timer="tacoTuesday"></div>
+    </div>
+  </section>
   <div class="page-signature">W Vanga</div>
 
   <script>
@@ -1143,14 +1384,27 @@
       { name: "Money Pug", value: 3000000000, unit: "$ / Fish" },
       { name: "Tripi Tropa", value: 4000000000, unit: "$ / Fish" },
       { name: "Cashy", value: 5000000000, unit: "$ / Fish" },
-      { name: "Rico Dinero", value: 6000000000, unit: "$ / Fish", approximate: true },
+      { name: "Rico Dinero", value: 6000000000, unit: "$ / Fish" },
       { name: "Arca Dragon", value: 7000000000, unit: "$ / Fish" },
+      { name: "Bananito", value: 8000000000, unit: "$ / Fish" },
+      { name: "Strawberrita", value: 0, unit: "$ / Fish", unavailable: true },
       { name: "CheeseBurger", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
       { name: "Chanchan", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
       { name: "Willi", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
       { name: "Ace", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
       { name: "Harsh", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
       { name: "Resh", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
+      { name: "Saderrax", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
+      { name: "BLSP", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
+      { name: "Shapin", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
+      { name: "Joel", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
+      { name: "Sbaynation", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
+      { name: "Pasya", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
+      { name: "Patryk", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
+      { name: "IP283", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
+      { name: "Kamil", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
+      { name: "Seal", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
+      { name: "Finger", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
       { name: "Vanga", value: 1000000000000000, unit: "$ / Fish", secretLabel: "G.O.A.T", hiddenExact: true }
     ];
 
@@ -1160,13 +1414,13 @@
       ["Lightning", 90], ["Taco", 100],
       ["Meteor", 100], ["Blackhole", 100],
       ["Radioactive", 110], ["Galaxy", 120],
-      ["Magmatic", 140], ["Disco", 200]
+      ["Magmatic", 140], ["Disco", 200],
+      ["Fishing Master", 200], ["Ligma (Joke)", 9900]
     ];
 
     const mutations = [
       ["Golden", 50], ["Diamond", 100],
-      ["Rainbow", 150], ["Fishing Master", 200],
-      ["Giant", 200]
+      ["Rainbow", 150], ["Giant", 200]
     ];
 
     const animatedAccentPairs = {
@@ -1186,7 +1440,7 @@
       "brainrot-wave-ocean": ["#c7f6ff", "#6cc3ff", "#3f7ff0", "#16358f"],
       "brainrot-vanga": ["#eefcff", "#baf0ff", "#7fd7ff", "#96f7ff"],
       "brainrot-rainbow": ["#ff7b7b", "#ffba66", "#7fd7ff", "#a88dff"],
-      "brainrot-top-secret": ["#0f1117", "#4d0a0f", "#ff4d4d", "#700d15"]
+      "brainrot-top-secret": ["#f0dcff", "#d4a8ff", "#b77cff", "#8f54e8"]
     };
 
     const brainrotColors = {
@@ -1276,12 +1530,25 @@
       "Cashy": "brainrot-wave-ocean",
       "Rico Dinero": "brainrot-rainbow",
       "Arca Dragon": "brainrot-rainbow",
+      "Bananito": "brainrot-rainbow",
+      "Strawberrita": "brainrot-rainbow",
       "CheeseBurger": "brainrot-top-secret",
       "Chanchan": "brainrot-top-secret",
       "Willi": "brainrot-top-secret",
-      "Ace": "brainrot-gray",
+      "Ace": "brainrot-top-secret",
       "Harsh": "brainrot-top-secret",
       "Resh": "brainrot-top-secret",
+      "Saderrax": "brainrot-top-secret",
+      "BLSP": "brainrot-top-secret",
+      "Shapin": "brainrot-top-secret",
+      "Joel": "brainrot-top-secret",
+      "Sbaynation": "brainrot-top-secret",
+      "Pasya": "brainrot-top-secret",
+      "Patryk": "brainrot-top-secret",
+      "IP283": "brainrot-top-secret",
+      "Kamil": "brainrot-top-secret",
+      "Seal": "brainrot-top-secret",
+      "Finger": "brainrot-top-secret",
       "Vanga": "brainrot-vanga"
     };
 
@@ -1302,7 +1569,7 @@
       "brainrot-wave-ocean": "accent-wave-ocean",
       "brainrot-vanga": "accent-vanga",
       "brainrot-rainbow": "accent-rainbow",
-      "brainrot-top-secret": "accent-red"
+      "brainrot-top-secret": "accent-top-secret"
     };
 
     const rarityMeta = {
@@ -1325,6 +1592,21 @@
       "brainrot-vanga": { order: 17, label: "G.O.A.T", className: "brainrot-vanga" }
     };
 
+    const percentBrainrots = [
+      { name: "Ogre Ogerini", percent: 20, type: "Admin" },
+      { name: "Mi Bamba", percent: 30, type: "Admin" },
+      { name: "RAAAAAH", percent: 35, type: "Admin" },
+      { name: "El Pepe", percent: 50, type: "Admin" },
+      { name: "Bunito Bunito Spinito", percent: 50, type: "Exclusive" },
+      { name: "Centrucci Nuclucci", percent: 50, type: "Exclusive" },
+      { name: "Jolly Sahur", percent: 110, type: "Exclusive" },
+      { name: "Noobini Pizzarini", percent: 114, type: "Exclusive" },
+      { name: "Chillin Rainbow", percent: 135, type: "Exclusive" },
+      { name: "La Christmas Combination", percent: 135, type: "Exclusive" },
+      { name: "Rainbow Cannelloni", percent: 200, type: "Exclusive" },
+      { name: "Rainbow Santteo", percent: 200, type: "Exclusive" }
+    ];
+
     const darkTextAccents = new Set([
       "accent-light-yellow",
       "accent-yellow-orange",
@@ -1337,7 +1619,10 @@
       rank: 0,
       level: 1,
       selectedMutations: new Set(),
-      hasCalculated: false
+      hasCalculated: false,
+      finalValue: null,
+      selectedPercentBrainrot: null,
+      language: "en"
     };
 
     const activeVangaTimers = new Map();
@@ -1363,13 +1648,65 @@
       traitsGrid: document.getElementById("traitsGrid"),
       mutationsGrid: document.getElementById("mutationsGrid"),
       calculateBtn: document.getElementById("calculateBtn"),
+      randomBtn: document.getElementById("randomBtn"),
+      languageSelect: document.getElementById("languageSelect"),
+      qualityLabel: document.getElementById("qualityLabel"),
+      percentSection: document.getElementById("percentSection"),
+      percentSearch: document.getElementById("percentSearch"),
+      percentResults: document.getElementById("percentResults"),
+      percentChoice: document.getElementById("percentChoice"),
+      calculatePercentBtn: document.getElementById("calculatePercentBtn"),
+      percentResult: document.getElementById("percentResult"),
       levelDown: document.getElementById("levelDown"),
       levelUp: document.getElementById("levelUp")
     };
 
+    const i18n = {
+      en: {
+        inputs: "Inputs", invalid: "Invalid", ready: "Ready", language: "Language", random: "Random", listSize: "List size",
+        small: "Small", medium: "Medium", large: "Large", baseStat: "Base Stat", mutationTotal: "Mutation Total", stacked: "stacked",
+        rank: "Rank", rankHint: "+15% per rank", level: "Level", levelHint: "+50% per level after 1", bonuses: "Bonuses",
+        bonusHint: "Tap to toggle. Percentages stack (sum to multiplier).", traits: "Traits", mutations: "Mutations",
+        calculateStat: "Calculate Stat", finalStat: "Final Stat", rankMultiplier: "Rank multiplier", levelMultiplier: "Level multiplier",
+        mutationMultiplier: "Mutation multiplier", formula: "Base × all multipliers", percentBrainrot: "Percent Brainrot",
+        calculatePercent: "Calculate % Brainrot", searchPercent: "Search percent brainrot...", noMatches: "No matching stats found.",
+        unavailable: "Unavailable", days: "d", hours: "h", minutes: "m", seconds: "s", aaMorning: "1st AA", aaEvening: "2nd AA",
+        tacoTuesday: "Taco Tuesday (SCRAPPED)"
+      },
+      ms: { inputs: "Input", invalid: "Tidak sah", ready: "Sedia", language: "Bahasa", random: "Rawak", listSize: "Saiz senarai", small: "Kecil", medium: "Sederhana", large: "Besar", baseStat: "Stat Asas", mutationTotal: "Jumlah Mutasi", stacked: "terkumpul", rank: "Rank", rankHint: "+15% setiap rank", level: "Tahap", levelHint: "+50% setiap tahap selepas 1", bonuses: "Bonus", bonusHint: "Tekan untuk tukar. Peratusan terkumpul.", traits: "Trait", mutations: "Mutasi", calculateStat: "Kira Stat", finalStat: "Stat Akhir", rankMultiplier: "Pengganda rank", levelMultiplier: "Pengganda tahap", mutationMultiplier: "Pengganda mutasi", formula: "Asas × semua pengganda", percentBrainrot: "Brainrot Peratus", calculatePercent: "Kira % Brainrot", searchPercent: "Cari brainrot peratus...", noMatches: "Tiada stat sepadan.", unavailable: "Tidak tersedia", days: "h", hours: "j", minutes: "m", seconds: "s", aaMorning: "AA pertama", aaEvening: "AA kedua", tacoTuesday: "Taco Tuesday (DIBATALKAN)" },
+      fil: { inputs: "Inputs", invalid: "Hindi pwede", ready: "Handa", language: "Wika", random: "Random", listSize: "Laki ng listahan", small: "Maliit", medium: "Katamtaman", large: "Malaki", baseStat: "Base Stat", mutationTotal: "Kabuuang Mutation", stacked: "naka-stack", rank: "Rank", rankHint: "+15% bawat rank", level: "Level", levelHint: "+50% bawat level pagkatapos ng 1", bonuses: "Bonuses", bonusHint: "I-tap para i-toggle. Naiipon ang percentages.", traits: "Traits", mutations: "Mutations", calculateStat: "Kalkulahin Stat", finalStat: "Final Stat", rankMultiplier: "Rank multiplier", levelMultiplier: "Level multiplier", mutationMultiplier: "Mutation multiplier", formula: "Base × lahat ng multiplier", percentBrainrot: "Percent Brainrot", calculatePercent: "Kalkulahin % Brainrot", searchPercent: "Hanap percent brainrot...", noMatches: "Walang tugmang stat.", unavailable: "Hindi available", days: "d", hours: "o", minutes: "m", seconds: "s", aaMorning: "1st AA", aaEvening: "2nd AA", tacoTuesday: "Taco Tuesday (SCRAPPED)" },
+      bg: { inputs: "Вход", invalid: "Невалидно", ready: "Готово", language: "Език", random: "Случайно", listSize: "Размер списък", small: "Малък", medium: "Среден", large: "Голям", baseStat: "Базов стат", mutationTotal: "Общо мутации", stacked: "натрупано", rank: "Ранг", rankHint: "+15% на ранг", level: "Ниво", levelHint: "+50% на ниво след 1", bonuses: "Бонуси", bonusHint: "Натисни за избор. Процентите се събират.", traits: "Трейтове", mutations: "Мутации", calculateStat: "Изчисли стат", finalStat: "Краен стат", rankMultiplier: "Множител ранг", levelMultiplier: "Множител ниво", mutationMultiplier: "Множител мутации", formula: "База × всички множители", percentBrainrot: "Процент Brainrot", calculatePercent: "Изчисли % Brainrot", searchPercent: "Търси процент brainrot...", noMatches: "Няма съвпадения.", unavailable: "Недостъпно", days: "д", hours: "ч", minutes: "м", seconds: "с", aaMorning: "1-ви AA", aaEvening: "2-ри AA", tacoTuesday: "Taco Tuesday (ОТМЕНЕНО)" }
+    };
+
+    const languageNames = {
+      de: "German", ro: "Romanian", ru: "Russian", zh: "Chinese", ja: "Japanese",
+      es: "Spanish", it: "Italian", pt: "Portuguese", tr: "Turkish", el: "Greek", lt: "Lithuanian"
+    };
+
+    for (const code of Object.keys(languageNames)) {
+      i18n[code] = { ...i18n.en, language: languageNames[code] };
+    }
+
+    Object.assign(i18n, {
+      de: { ...i18n.en, inputs: "Eingaben", invalid: "Ungültig", ready: "Bereit", language: "Sprache", random: "Zufall", listSize: "Listengröße", small: "Klein", medium: "Mittel", large: "Groß", baseStat: "Basiswert", mutationTotal: "Mutation gesamt", stacked: "gestapelt", rank: "Rang", rankHint: "+15% pro Rang", level: "Level", levelHint: "+50% pro Level nach 1", bonuses: "Boni", bonusHint: "Antippen zum Umschalten. Prozentwerte addieren sich.", traits: "Traits", mutations: "Mutationen", calculateStat: "Stat berechnen", finalStat: "Endwert", rankMultiplier: "Rangmultiplikator", levelMultiplier: "Levelmultiplikator", mutationMultiplier: "Mutationsmultiplikator", formula: "Basis × alle Multiplikatoren", percentBrainrot: "Prozent Brainrot", calculatePercent: "% Brainrot berechnen", searchPercent: "Prozent-Brainrot suchen...", noMatches: "Keine passenden Werte.", unavailable: "Nicht verfügbar", days: "T", hours: "Std", minutes: "Min", seconds: "Sek", aaMorning: "1. AA", aaEvening: "2. AA", tacoTuesday: "Taco Tuesday (GESTRICHEN)" },
+      ro: { ...i18n.en, inputs: "Intrări", invalid: "Invalid", ready: "Gata", language: "Limbă", random: "Aleator", listSize: "Mărime listă", small: "Mic", medium: "Mediu", large: "Mare", baseStat: "Stat de bază", mutationTotal: "Total mutații", stacked: "adunate", rank: "Rang", rankHint: "+15% pe rang", level: "Nivel", levelHint: "+50% pe nivel după 1", bonuses: "Bonusuri", bonusHint: "Apasă pentru comutare. Procentele se adună.", traits: "Trăsături", mutations: "Mutații", calculateStat: "Calculează stat", finalStat: "Stat final", rankMultiplier: "Multiplicator rang", levelMultiplier: "Multiplicator nivel", mutationMultiplier: "Multiplicator mutații", formula: "Bază × toți multiplicatorii", percentBrainrot: "Brainrot procentual", calculatePercent: "Calculează % Brainrot", searchPercent: "Caută brainrot procentual...", noMatches: "Nu există potriviri.", unavailable: "Indisponibil", days: "z", hours: "h", minutes: "m", seconds: "s", aaMorning: "Primul AA", aaEvening: "Al doilea AA", tacoTuesday: "Taco Tuesday (ANULAT)" },
+      ru: { ...i18n.en, inputs: "Ввод", invalid: "Неверно", ready: "Готово", language: "Язык", random: "Случайно", listSize: "Размер списка", small: "Малый", medium: "Средний", large: "Большой", baseStat: "Базовый стат", mutationTotal: "Всего мутаций", stacked: "сложено", rank: "Ранг", rankHint: "+15% за ранг", level: "Уровень", levelHint: "+50% за уровень после 1", bonuses: "Бонусы", bonusHint: "Нажми для выбора. Проценты складываются.", traits: "Трейты", mutations: "Мутации", calculateStat: "Рассчитать стат", finalStat: "Итоговый стат", rankMultiplier: "Множитель ранга", levelMultiplier: "Множитель уровня", mutationMultiplier: "Множитель мутаций", formula: "База × все множители", percentBrainrot: "Процент Brainrot", calculatePercent: "Рассчитать % Brainrot", searchPercent: "Искать процент brainrot...", noMatches: "Совпадений нет.", unavailable: "Недоступно", days: "д", hours: "ч", minutes: "м", seconds: "с", aaMorning: "1-й AA", aaEvening: "2-й AA", tacoTuesday: "Taco Tuesday (ОТМЕНЕНО)" },
+      zh: { ...i18n.en, inputs: "输入", invalid: "无效", ready: "就绪", language: "语言", random: "随机", listSize: "列表大小", small: "小", medium: "中", large: "大", baseStat: "基础数值", mutationTotal: "突变总计", stacked: "叠加", rank: "等级", rankHint: "每级 +15%", level: "等级", levelHint: "1级后每级 +50%", bonuses: "加成", bonusHint: "点击切换。百分比会相加。", traits: "特性", mutations: "突变", calculateStat: "计算数值", finalStat: "最终数值", rankMultiplier: "等级倍率", levelMultiplier: "等级倍率", mutationMultiplier: "突变倍率", formula: "基础 × 所有倍率", percentBrainrot: "百分比 Brainrot", calculatePercent: "计算 % Brainrot", searchPercent: "搜索百分比 brainrot...", noMatches: "没有匹配。", unavailable: "不可用", days: "天", hours: "时", minutes: "分", seconds: "秒", aaMorning: "第1个 AA", aaEvening: "第2个 AA", tacoTuesday: "Taco Tuesday（已取消）" },
+      ja: { ...i18n.en, inputs: "入力", invalid: "無効", ready: "準備完了", language: "言語", random: "ランダム", listSize: "リストサイズ", small: "小", medium: "中", large: "大", baseStat: "基本ステータス", mutationTotal: "変異合計", stacked: "加算済み", rank: "ランク", rankHint: "ランクごとに+15%", level: "レベル", levelHint: "1以降レベルごとに+50%", bonuses: "ボーナス", bonusHint: "タップで切替。%は合計されます。", traits: "特性", mutations: "変異", calculateStat: "ステータス計算", finalStat: "最終ステータス", rankMultiplier: "ランク倍率", levelMultiplier: "レベル倍率", mutationMultiplier: "変異倍率", formula: "基本 × 全倍率", percentBrainrot: "% Brainrot", calculatePercent: "% Brainrotを計算", searchPercent: "% brainrotを検索...", noMatches: "一致なし。", unavailable: "利用不可", days: "日", hours: "時", minutes: "分", seconds: "秒", aaMorning: "1st AA", aaEvening: "2nd AA", tacoTuesday: "Taco Tuesday（廃止）" },
+      es: { ...i18n.en, inputs: "Entradas", invalid: "Inválido", ready: "Listo", language: "Idioma", random: "Aleatorio", listSize: "Tamaño lista", small: "Pequeño", medium: "Medio", large: "Grande", baseStat: "Stat base", mutationTotal: "Total mutación", stacked: "acumulado", rank: "Rango", rankHint: "+15% por rango", level: "Nivel", levelHint: "+50% por nivel después de 1", bonuses: "Bonos", bonusHint: "Toca para cambiar. Los porcentajes se suman.", traits: "Rasgos", mutations: "Mutaciones", calculateStat: "Calcular stat", finalStat: "Stat final", rankMultiplier: "Multiplicador rango", levelMultiplier: "Multiplicador nivel", mutationMultiplier: "Multiplicador mutación", formula: "Base × todos los multiplicadores", percentBrainrot: "Brainrot porcentual", calculatePercent: "Calcular % Brainrot", searchPercent: "Buscar brainrot porcentual...", noMatches: "Sin coincidencias.", unavailable: "No disponible", days: "d", hours: "h", minutes: "m", seconds: "s", aaMorning: "1er AA", aaEvening: "2do AA", tacoTuesday: "Taco Tuesday (CANCELADO)" },
+      it: { ...i18n.en, inputs: "Input", invalid: "Non valido", ready: "Pronto", language: "Lingua", random: "Casuale", listSize: "Dimensione lista", small: "Piccola", medium: "Media", large: "Grande", baseStat: "Stat base", mutationTotal: "Totale mutazioni", stacked: "sommato", rank: "Rango", rankHint: "+15% per rango", level: "Livello", levelHint: "+50% per livello dopo 1", bonuses: "Bonus", bonusHint: "Tocca per attivare. Le percentuali si sommano.", traits: "Tratti", mutations: "Mutazioni", calculateStat: "Calcola stat", finalStat: "Stat finale", rankMultiplier: "Moltiplicatore rango", levelMultiplier: "Moltiplicatore livello", mutationMultiplier: "Moltiplicatore mutazioni", formula: "Base × tutti i moltiplicatori", percentBrainrot: "Brainrot percentuale", calculatePercent: "Calcola % Brainrot", searchPercent: "Cerca brainrot percentuale...", noMatches: "Nessuna corrispondenza.", unavailable: "Non disponibile", days: "g", hours: "h", minutes: "m", seconds: "s", aaMorning: "1° AA", aaEvening: "2° AA", tacoTuesday: "Taco Tuesday (SCARTATO)" },
+      pt: { ...i18n.en, inputs: "Entradas", invalid: "Inválido", ready: "Pronto", language: "Idioma", random: "Aleatório", listSize: "Tamanho da lista", small: "Pequeno", medium: "Médio", large: "Grande", baseStat: "Stat base", mutationTotal: "Total de mutação", stacked: "somado", rank: "Rank", rankHint: "+15% por rank", level: "Nível", levelHint: "+50% por nível após 1", bonuses: "Bônus", bonusHint: "Toque para alternar. Porcentagens somam.", traits: "Traits", mutations: "Mutações", calculateStat: "Calcular stat", finalStat: "Stat final", rankMultiplier: "Multiplicador de rank", levelMultiplier: "Multiplicador de nível", mutationMultiplier: "Multiplicador de mutação", formula: "Base × todos multiplicadores", percentBrainrot: "Brainrot percentual", calculatePercent: "Calcular % Brainrot", searchPercent: "Buscar brainrot percentual...", noMatches: "Nenhuma correspondência.", unavailable: "Indisponível", days: "d", hours: "h", minutes: "m", seconds: "s", aaMorning: "1º AA", aaEvening: "2º AA", tacoTuesday: "Taco Tuesday (CANCELADO)" },
+      tr: { ...i18n.en, inputs: "Girdiler", invalid: "Geçersiz", ready: "Hazır", language: "Dil", random: "Rastgele", listSize: "Liste boyutu", small: "Küçük", medium: "Orta", large: "Büyük", baseStat: "Temel stat", mutationTotal: "Mutasyon toplamı", stacked: "birikmiş", rank: "Rank", rankHint: "rank başına +15%", level: "Seviye", levelHint: "1'den sonra seviye başına +50%", bonuses: "Bonuslar", bonusHint: "Aç/kapat için dokun. Yüzdeler toplanır.", traits: "Özellikler", mutations: "Mutasyonlar", calculateStat: "Stat hesapla", finalStat: "Final stat", rankMultiplier: "Rank çarpanı", levelMultiplier: "Seviye çarpanı", mutationMultiplier: "Mutasyon çarpanı", formula: "Temel × tüm çarpanlar", percentBrainrot: "Yüzde Brainrot", calculatePercent: "% Brainrot hesapla", searchPercent: "Yüzde brainrot ara...", noMatches: "Eşleşme yok.", unavailable: "Kullanılamaz", days: "g", hours: "s", minutes: "d", seconds: "sn", aaMorning: "1. AA", aaEvening: "2. AA", tacoTuesday: "Taco Tuesday (İPTAL)" },
+      el: { ...i18n.en, inputs: "Είσοδοι", invalid: "Άκυρο", ready: "Έτοιμο", language: "Γλώσσα", random: "Τυχαίο", listSize: "Μέγεθος λίστας", small: "Μικρό", medium: "Μεσαίο", large: "Μεγάλο", baseStat: "Βασικό stat", mutationTotal: "Σύνολο μεταλλάξεων", stacked: "αθροισμένο", rank: "Rank", rankHint: "+15% ανά rank", level: "Επίπεδο", levelHint: "+50% ανά επίπεδο μετά το 1", bonuses: "Μπόνους", bonusHint: "Πάτα για αλλαγή. Τα ποσοστά αθροίζονται.", traits: "Traits", mutations: "Μεταλλάξεις", calculateStat: "Υπολόγισε stat", finalStat: "Τελικό stat", rankMultiplier: "Πολλαπλασιαστής rank", levelMultiplier: "Πολλαπλασιαστής επιπέδου", mutationMultiplier: "Πολλαπλασιαστής μετάλλαξης", formula: "Βάση × όλοι οι πολλαπλασιαστές", percentBrainrot: "Ποσοστό Brainrot", calculatePercent: "Υπολόγισε % Brainrot", searchPercent: "Αναζήτηση percent brainrot...", noMatches: "Δεν βρέθηκαν.", unavailable: "Μη διαθέσιμο", days: "η", hours: "ω", minutes: "λ", seconds: "δ", aaMorning: "1ο AA", aaEvening: "2ο AA", tacoTuesday: "Taco Tuesday (ΑΚΥΡΟ)" },
+      lt: { ...i18n.en, inputs: "Įvestys", invalid: "Netinka", ready: "Paruošta", language: "Kalba", random: "Atsitiktinis", listSize: "Sąrašo dydis", small: "Mažas", medium: "Vidutinis", large: "Didelis", baseStat: "Bazinis stat", mutationTotal: "Mutacijų suma", stacked: "sudėta", rank: "Rankas", rankHint: "+15% už ranką", level: "Lygis", levelHint: "+50% už lygį po 1", bonuses: "Bonusai", bonusHint: "Spustelėk perjungti. Procentai sumuojasi.", traits: "Traitai", mutations: "Mutacijos", calculateStat: "Skaičiuoti stat", finalStat: "Galutinis stat", rankMultiplier: "Ranko daugiklis", levelMultiplier: "Lygio daugiklis", mutationMultiplier: "Mutacijos daugiklis", formula: "Bazė × visi daugikliai", percentBrainrot: "Procentinis Brainrot", calculatePercent: "Skaičiuoti % Brainrot", searchPercent: "Ieškoti procentinio brainrot...", noMatches: "Nėra atitikmenų.", unavailable: "Nepasiekiama", days: "d", hours: "v", minutes: "m", seconds: "s", aaMorning: "1 AA", aaEvening: "2 AA", tacoTuesday: "Taco Tuesday (ATMESTA)" }
+    });
+
     function formatMoney(value) {
       if (value >= 1000000000000000000000000000) {
         const octillions = value / 1000000000000000000000000000;
+        if (octillions > 999) {
+          return "999Oc+";
+        }
         return `${Number(octillions.toFixed(octillions >= 10 ? 0 : 2)).toString()}Oc`;
       }
 
@@ -1415,7 +1752,7 @@
 
     function formatMaybeAround(value, stat) {
       const formatted = formatMoney(value);
-      return stat?.approximate ? `[Around] ${formatted}` : formatted;
+      return formatted;
     }
 
     function getRarityMeta(stat) {
@@ -1450,6 +1787,18 @@
       return sparkles.join(", ");
     }
 
+    function buildTopSecretSparkles() {
+      const sparkles = [];
+      for (let i = 0; i < 7; i += 1) {
+        const x = randomBetween(-18, 18).toFixed(1);
+        const y = randomBetween(-14, 14).toFixed(1);
+        const size = randomBetween(0, 1.8).toFixed(1);
+        sparkles.push(`${x}px ${y}px 0 ${size}px rgba(212,168,255,0.9)`);
+      }
+      sparkles.push("0 0 10px rgba(212,168,255,0.35)");
+      return sparkles.join(", ");
+    }
+
     function applyVangaSparkles(element, enabled) {
       if (!element) return;
       if (enabled) {
@@ -1459,8 +1808,17 @@
       }
     }
 
+    function applyTopSecretSparkles(element, enabled) {
+      if (!element) return;
+      if (enabled) {
+        element.style.setProperty("--top-secret-sparkles", buildTopSecretSparkles());
+      } else {
+        element.style.removeProperty("--top-secret-sparkles");
+      }
+    }
+
     function renderBrainrotNameMarkup(name, colorClass) {
-      if (colorClass !== "brainrot-vanga") {
+      if (colorClass !== "brainrot-vanga" && colorClass !== "brainrot-top-secret") {
         return name;
       }
 
@@ -1468,7 +1826,8 @@
         `<span class="vanga-letter">${letter === " " ? "&nbsp;" : letter}</span>`
       ).join("");
 
-      return `<span class="vanga-host" data-vanga-text="true">${letters}</span>`;
+      const sparkleType = colorClass === "brainrot-top-secret" ? "top-secret" : "vanga";
+      return `<span class="vanga-host" data-vanga-text="${sparkleType}">${letters}</span>`;
     }
 
     function clearVangaSparkleTimers() {
@@ -1486,12 +1845,15 @@
 
       const letter = letters[Math.floor(Math.random() * letters.length)];
       const sparkle = document.createElement("span");
-      sparkle.className = "vanga-sparkle";
+      const isTopSecret = host.dataset.vangaText === "top-secret";
+      sparkle.className = `vanga-sparkle${isTopSecret ? " square-sparkle" : ""}`;
       sparkle.style.left = `${letter.offsetLeft + (letter.offsetWidth / 2) - 3}px`;
       sparkle.style.top = `${Math.max(0, letter.offsetTop + (letter.offsetHeight / 2) - 3)}px`;
       sparkle.style.setProperty("--sparkle-x", `${randomBetween(-8, 8).toFixed(1)}px`);
       sparkle.style.setProperty("--sparkle-y", `${randomBetween(-22, -10).toFixed(1)}px`);
-      sparkle.style.background = Math.random() > 0.45 ? "rgba(255,255,255,0.96)" : "rgba(143,228,255,0.88)";
+      sparkle.style.background = isTopSecret
+        ? "rgba(212,168,255,0.95)"
+        : Math.random() > 0.45 ? "rgba(255,255,255,0.96)" : "rgba(143,228,255,0.88)";
       host.appendChild(sparkle);
 
       window.setTimeout(() => {
@@ -1501,10 +1863,10 @@
 
     function setupVangaSparkleTimers() {
       clearVangaSparkleTimers();
-      const hosts = document.querySelectorAll("[data-vanga-text='true']");
+      const hosts = document.querySelectorAll("[data-vanga-text]");
       hosts.forEach((host) => {
         emitVangaSparkle(host);
-        const timer = window.setInterval(() => emitVangaSparkle(host), 1000);
+        const timer = window.setInterval(() => emitVangaSparkle(host), 300);
         activeVangaTimers.set(host, timer);
       });
     }
@@ -1512,6 +1874,9 @@
     function updateSelectedBrainrotLabel() {
       els.selectedBrainrotLabel.className = "selected-brainrot-label brainrot-name";
       applyVangaSparkles(els.selectedBrainrotLabel, false);
+      applyTopSecretSparkles(els.selectedBrainrotLabel, false);
+      els.searchWrap.style.removeProperty("--selected-clear-color");
+      els.searchWrap.style.removeProperty("--selected-clear-glow");
 
       if (!state.selectedStat) {
         els.selectedBrainrotLabel.textContent = "";
@@ -1526,6 +1891,10 @@
       }
       els.selectedBrainrotLabel.innerHTML = renderBrainrotNameMarkup(state.selectedStat.name, brainrotClass);
       applyVangaSparkles(els.selectedBrainrotLabel, brainrotClass === "brainrot-vanga");
+      applyTopSecretSparkles(els.selectedBrainrotLabel, brainrotClass === "brainrot-top-secret");
+      const [clearColor] = getSelectedAnimatedPair();
+      els.searchWrap.style.setProperty("--selected-clear-color", clearColor);
+      els.searchWrap.style.setProperty("--selected-clear-glow", clearColor);
       els.searchWrap.classList.add("has-selection");
       setupVangaSparkleTimers();
     }
@@ -1571,6 +1940,14 @@
       applyVangaSparkles(els.levelMultiplier, false);
       applyVangaSparkles(els.mutationMultiplier, false);
       applyVangaSparkles(els.formulaValue, false);
+      applyTopSecretSparkles(els.baseStat, false);
+      applyTopSecretSparkles(els.finalStat, false);
+      applyTopSecretSparkles(els.finalUnit, false);
+      applyTopSecretSparkles(els.mutationTotal, false);
+      applyTopSecretSparkles(els.rankMultiplier, false);
+      applyTopSecretSparkles(els.levelMultiplier, false);
+      applyTopSecretSparkles(els.mutationMultiplier, false);
+      applyTopSecretSparkles(els.formulaValue, false);
 
       if (!state.selectedStat) {
         return;
@@ -1582,6 +1959,7 @@
       }
 
       const isVanga = accentClass === "accent-vanga";
+      const isTopSecret = accentClass === "accent-top-secret";
 
       if (isVanga) {
         els.baseStat.classList.add(accentClass);
@@ -1599,6 +1977,27 @@
         applyVangaSparkles(els.mutationMultiplier, true);
         applyVangaSparkles(els.formulaValue, true);
         applyVangaSparkles(els.finalStat, true);
+        return;
+      }
+
+      if (isTopSecret) {
+        els.calculateBtn.classList.add(accentClass);
+        els.baseStat.classList.add(accentClass);
+        els.mutationTotal.classList.add(accentClass);
+        els.rankMultiplier.classList.add(accentClass);
+        els.levelMultiplier.classList.add(accentClass);
+        els.mutationMultiplier.classList.add(accentClass);
+        els.formulaValue.classList.add(accentClass);
+        els.finalStat.classList.add(accentClass);
+        els.finalUnit.classList.add(accentClass);
+        applyTopSecretSparkles(els.baseStat, true);
+        applyTopSecretSparkles(els.mutationTotal, true);
+        applyTopSecretSparkles(els.rankMultiplier, true);
+        applyTopSecretSparkles(els.levelMultiplier, true);
+        applyTopSecretSparkles(els.mutationMultiplier, true);
+        applyTopSecretSparkles(els.formulaValue, true);
+        applyTopSecretSparkles(els.finalStat, true);
+        els.calculateBtn.style.color = "#1d1028";
         return;
       }
 
@@ -1689,6 +2088,7 @@
             }
           }
           invalidateCalculatedResult();
+          emitBrainrotSplash(item);
           renderBonusGrid(els.traitsGrid, traits, "trait");
           renderBonusGrid(els.mutationsGrid, mutations, "mutation");
           calculate();
@@ -1697,11 +2097,170 @@
       }
     }
 
+    function getCurrentT() {
+      return i18n[state.language] || i18n.en;
+    }
+
+    function applyTranslations() {
+      const t = getCurrentT();
+      document.querySelectorAll("[data-i18n]").forEach((node) => {
+        const key = node.dataset.i18n;
+        if (t[key]) node.textContent = t[key];
+      });
+      els.statusBadge.textContent = state.selectedStat ? t.ready : t.invalid;
+      els.search.placeholder = "Search brainrot...";
+      els.percentSearch.placeholder = t.searchPercent;
+      updateTimers();
+      if (els.results.classList.contains("show")) updateSearchResults(els.search.value);
+      if (els.percentResults.classList.contains("show")) updatePercentResults(els.percentSearch.value);
+    }
+
+    function getDisplayMoney(value, stat) {
+      return formatMaybeAround(value, stat);
+    }
+
+    function getQualityLabel(value) {
+      if (value > 3000000000000) return "Ur lying gng";
+      if (value > 1200000000000) return "Leaderboard";
+      if (value > 900000000000) return "PRO";
+      if (value < 100) return "Nub";
+      if (value < 450) return "Mid";
+      if (value < 900000000000) return "Lil Pro";
+      return "PRO";
+    }
+
+    function emitBrainrotSplash(target) {
+      const rect = target?.getBoundingClientRect?.() || {
+        left: window.innerWidth / 2, top: window.innerHeight / 2, width: 0, height: 0
+      };
+      const [color1, color2, color3, color4] = getSelectedAnimatedPair();
+      for (let i = 0; i < 14; i += 1) {
+        const dot = document.createElement("span");
+        dot.className = "brainrot-splash";
+        dot.style.left = `${rect.left + rect.width / 2}px`;
+        dot.style.top = `${rect.top + rect.height / 2}px`;
+        dot.style.setProperty("--splash-color", [color1, color2, color3, color4][i % 4]);
+        dot.style.setProperty("--splash-x", `${randomBetween(-72, 72).toFixed(1)}px`);
+        dot.style.setProperty("--splash-y", `${randomBetween(-62, 44).toFixed(1)}px`);
+        document.body.appendChild(dot);
+        window.setTimeout(() => dot.remove(), 760);
+      }
+    }
+
+    function resetPercentBrainrot() {
+      state.selectedPercentBrainrot = null;
+      els.percentSearch.value = "";
+      els.percentChoice.textContent = "";
+      els.percentResult.textContent = "";
+      els.calculatePercentBtn.style.display = "none";
+      els.percentResults.classList.remove("show");
+    }
+
+    function renderPercentResults(matches) {
+      const t = getCurrentT();
+      els.percentResults.innerHTML = "";
+      if (!matches.length) {
+        els.percentResults.innerHTML = `<div class="empty-state">${t.noMatches}</div>`;
+      } else {
+        for (const item of matches) {
+          const option = document.createElement("div");
+          const colorClass = item.type === "Admin" ? "brainrot-admin" : "brainrot-exclusive-static";
+          option.className = "search-option";
+          option.innerHTML = `<span class="brainrot-name ${colorClass}">${item.name}</span><span class="subtle">${item.type} ${item.percent}%</span>`;
+          option.addEventListener("click", () => {
+            state.selectedPercentBrainrot = item;
+            els.percentSearch.value = item.name;
+            els.percentResults.classList.remove("show");
+            els.percentChoice.innerHTML = `<span class="${colorClass}">${item.name}</span> ${item.percent}%`;
+            els.calculatePercentBtn.style.display = "block";
+            els.percentResult.textContent = "";
+          });
+          els.percentResults.appendChild(option);
+        }
+      }
+      els.percentResults.classList.add("show");
+    }
+
+    function updatePercentResults(query) {
+      const normalized = query.trim().toLowerCase();
+      const matches = percentBrainrots.filter((item) =>
+        !normalized || item.name.toLowerCase().includes(normalized) || item.type.toLowerCase().includes(normalized)
+      );
+      renderPercentResults(matches);
+    }
+
+    function calculatePercentBrainrot() {
+      if (!state.selectedPercentBrainrot || state.finalValue == null) return;
+      const value = state.finalValue * (state.selectedPercentBrainrot.percent / 100);
+      els.percentResult.textContent = `$${formatMoney(value)} ${state.selectedStat.unit.replace("$ /", "/")}`;
+      emitBrainrotSplash(els.calculatePercentBtn);
+    }
+
+    function pickRandomBrainrot() {
+      const topSecretStats = baseStats.filter((item) => item.secretLabel === "Top Secret");
+      const visibleStats = baseStats.filter((item) => !item.hiddenExact && !item.unavailable);
+      const roll = Math.random();
+      let pool = visibleStats;
+      if (roll < 0.01) {
+        pool = baseStats.filter((item) => item.name === "Vanga");
+      } else if (roll < 0.03 && topSecretStats.length) {
+        pool = topSecretStats;
+      }
+      const picked = pool[Math.floor(Math.random() * pool.length)];
+      state.selectedStat = picked;
+      state.rank = Math.floor(randomBetween(0, 5));
+      state.level = Math.floor(randomBetween(1, 81));
+      state.selectedMutations = new Set();
+      for (const [name] of traits) {
+        if (Math.random() < 0.35) state.selectedMutations.add(name);
+      }
+      const mutation = mutations[Math.floor(Math.random() * mutations.length)];
+      if (mutation) state.selectedMutations.add(mutation[0]);
+      state.hasCalculated = false;
+      els.search.value = picked.name;
+      resetPercentBrainrot();
+      calculate();
+      emitBrainrotSplash(els.randomBtn);
+    }
+
+    function getNextWeeklyTarget(day, hour, minute) {
+      const now = new Date();
+      const target = new Date(now);
+      const diff = (day - target.getDay() + 7) % 7;
+      target.setDate(target.getDate() + diff);
+      target.setHours(hour, minute, 0, 0);
+      if (target <= now) target.setDate(target.getDate() + 7);
+      return target;
+    }
+
+    function formatCountdown(target) {
+      const t = getCurrentT();
+      const total = Math.max(0, target.getTime() - Date.now());
+      const days = Math.floor(total / 86400000);
+      const hours = Math.floor((total % 86400000) / 3600000);
+      const minutes = Math.floor((total % 3600000) / 60000);
+      const seconds = Math.floor((total % 60000) / 1000);
+      return `<span>${days}</span>${t.days} <span>${hours}</span>${t.hours} <span>${minutes}</span>${t.minutes} <span>${seconds}</span>${t.seconds}`;
+    }
+
+    function updateTimers() {
+      const targets = {
+        aaMorning: getNextWeeklyTarget(6, 16, 0),
+        aaEvening: getNextWeeklyTarget(0, 2, 0),
+        tacoTuesday: getNextWeeklyTarget(3, 4, 0)
+      };
+      for (const [key, target] of Object.entries(targets)) {
+        const node = document.querySelector(`[data-timer="${key}"]`);
+        if (node) node.innerHTML = formatCountdown(target);
+      }
+    }
+
     function renderSearchResults(matches) {
       els.results.innerHTML = "";
+      const t = getCurrentT();
 
       if (!matches.length) {
-        els.results.innerHTML = '<div class="empty-state">No matching stats found.</div>';
+        els.results.innerHTML = `<div class="empty-state">${t.noMatches}</div>`;
       } else {
         let currentRarity = "";
 
@@ -1724,13 +2283,15 @@
           const block = els.results.lastElementChild;
           const option = document.createElement("div");
           option.className = `search-option${match.unavailable ? " unavailable" : ""}`;
-          option.innerHTML = `<span class="brainrot-name ${colorClass}">${renderBrainrotNameMarkup(match.name, colorClass)}</span><span class="subtle">${match.secretLabel || (match.unavailable ? "Unavailable" : `${match.approximate ? "[Around] " : ""}$${formatMoney(match.value)} ${match.unit.replace("$ /", "/")}`)}</span>`;
+          option.innerHTML = `<span class="brainrot-name ${colorClass}">${renderBrainrotNameMarkup(match.name, colorClass)}</span><span class="subtle">${match.secretLabel || (match.unavailable ? t.unavailable : `$${formatMoney(match.value)} ${match.unit.replace("$ /", "/")}`)}</span>`;
           applyVangaSparkles(option.querySelector(".brainrot-name"), colorClass === "brainrot-vanga");
+          applyTopSecretSparkles(option.querySelector(".brainrot-name"), colorClass === "brainrot-top-secret");
           if (!match.unavailable || match.secretLabel) {
             option.addEventListener("click", () => {
               state.selectedStat = match;
               state.hasCalculated = false;
               els.search.value = match.name;
+              resetPercentBrainrot();
               els.results.classList.remove("show");
               calculate();
             });
@@ -1789,16 +2350,20 @@
 
       els.mutationTotal.textContent = `${mutationPercent}%`;
       els.levelValue.value = String(state.level);
+      const t = getCurrentT();
 
       if (!state.selectedStat) {
         els.baseStat.textContent = "—";
         els.finalStat.textContent = "—";
         els.finalUnit.textContent = "$ / Fish";
+        els.qualityLabel.textContent = "";
+        els.percentSection.classList.remove("show");
+        state.finalValue = null;
         els.rankMultiplier.textContent = "—";
         els.levelMultiplier.textContent = "—";
         els.mutationMultiplier.textContent = "—";
         els.formulaValue.textContent = "—";
-        els.statusBadge.textContent = "Invalid";
+        els.statusBadge.textContent = t.invalid;
         els.statusBadge.classList.remove("ready");
         applySelectedAccent();
         updateSelectedBrainrotLabel();
@@ -1811,7 +2376,7 @@
 
       els.baseStat.textContent = formatMoney(state.selectedStat.value);
       els.selectedUnit.textContent = state.selectedStat.unit;
-      els.statusBadge.textContent = "Ready";
+      els.statusBadge.textContent = t.ready;
       els.statusBadge.classList.add("ready");
       applySelectedAccent();
       updateSelectedBrainrotLabel();
@@ -1822,6 +2387,9 @@
       if (!state.hasCalculated) {
         els.finalStat.textContent = "—";
         els.finalUnit.textContent = state.selectedStat.unit;
+        els.qualityLabel.textContent = "";
+        els.percentSection.classList.remove("show");
+        state.finalValue = null;
         els.rankMultiplier.textContent = "—";
         els.levelMultiplier.textContent = "—";
         els.mutationMultiplier.textContent = "—";
@@ -1831,13 +2399,16 @@
       }
 
       const finalValue = state.selectedStat.value * rankMult * levelMult * mutationMult;
+      state.finalValue = finalValue;
 
-      els.finalStat.textContent = formatMaybeAround(finalValue, state.selectedStat);
+      els.finalStat.textContent = getDisplayMoney(finalValue, state.selectedStat);
       els.finalUnit.textContent = state.selectedStat.unit;
+      els.qualityLabel.textContent = getQualityLabel(finalValue);
+      els.percentSection.classList.add("show");
       els.rankMultiplier.textContent = `${rankMult.toFixed(2)}×`;
       els.levelMultiplier.textContent = `${levelMult.toFixed(2)}×`;
       els.mutationMultiplier.textContent = `${mutationMult.toFixed(2)}×`;
-      els.formulaValue.textContent = `${formatMaybeAround(finalValue, state.selectedStat)}`;
+      els.formulaValue.textContent = `${getDisplayMoney(finalValue, state.selectedStat)}`;
       renderRanks();
     }
 
@@ -1877,6 +2448,8 @@
       if (!event.target.value.trim()) {
         state.selectedStat = null;
         state.hasCalculated = false;
+        state.selectedMutations.clear();
+        resetPercentBrainrot();
         calculate();
       }
       updateSearchResults(event.target.value);
@@ -1897,6 +2470,8 @@
       els.search.value = "";
       state.selectedStat = null;
       state.hasCalculated = false;
+      state.selectedMutations.clear();
+      resetPercentBrainrot();
       els.searchWrap.classList.remove("open");
       calculate();
       updateSearchResults("");
@@ -1908,6 +2483,28 @@
       }
       state.hasCalculated = true;
       calculate();
+      emitBrainrotSplash(els.calculateBtn);
+    });
+
+    els.randomBtn.addEventListener("click", pickRandomBrainrot);
+
+    els.percentSearch.addEventListener("input", (event) => {
+      state.selectedPercentBrainrot = null;
+      els.percentChoice.textContent = "";
+      els.percentResult.textContent = "";
+      els.calculatePercentBtn.style.display = "none";
+      updatePercentResults(event.target.value);
+    });
+
+    els.percentSearch.addEventListener("focus", () => {
+      updatePercentResults(els.percentSearch.value);
+    });
+
+    els.calculatePercentBtn.addEventListener("click", calculatePercentBrainrot);
+
+    els.languageSelect.addEventListener("change", (event) => {
+      state.language = event.target.value;
+      applyTranslations();
     });
 
     document.addEventListener("click", (event) => {
@@ -1915,12 +2512,17 @@
         els.results.classList.remove("show");
         els.searchWrap.classList.remove("open");
       }
+      if (!event.target.closest(".percent-search-wrap")) {
+        els.percentResults.classList.remove("show");
+      }
     });
 
     renderRanks();
     renderBonusGrid(els.traitsGrid, traits, "trait");
     renderBonusGrid(els.mutationsGrid, mutations, "mutation");
     applySearchSize("medium");
+    applyTranslations();
+    window.setInterval(updateTimers, 1000);
     calculate();
   </script>
 </body>
