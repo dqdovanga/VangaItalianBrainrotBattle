@@ -34,6 +34,7 @@
         radial-gradient(circle at bottom right, rgba(99, 197, 255, 0.10), transparent 24%),
         linear-gradient(180deg, #0b1322 0%, #10192c 100%);
       padding: 16px;
+      overflow-x: auto;
     }
 
     body::before {
@@ -49,15 +50,12 @@
         radial-gradient(circle at 92% 82%, var(--bubble-color-4, rgba(255,255,255,0.10)) 0 10vw, transparent 10.4vw);
       filter: blur(2px);
       opacity: 0.95;
-      animation: bubbleFloat 12s ease-in-out infinite alternate;
+      animation: bubbleFloat 5.5s ease-in-out infinite alternate;
     }
 
-    body.potato-high::before {
-      display: none;
-    }
-
+    body.potato-high::before,
     body.potato-low::before {
-      animation: none;
+      display: none;
     }
 
     .app {
@@ -69,6 +67,19 @@
       align-items: start;
     }
 
+    @media (min-width: 1081px) {
+      body {
+        min-width: 1980px;
+      }
+
+      .app,
+      .timer-board,
+      .page-signature {
+        margin-left: 380px;
+        margin-right: 380px;
+      }
+    }
+
     .panel {
       background: linear-gradient(180deg, rgba(24, 35, 56, 0.96), rgba(20, 30, 48, 0.94));
       border: 1px solid var(--line);
@@ -76,6 +87,11 @@
       box-shadow: var(--shadow);
       padding: 16px;
       backdrop-filter: blur(10px);
+    }
+
+    .panel-stack {
+      display: grid;
+      gap: 18px;
     }
 
     .section-head {
@@ -474,10 +490,11 @@
 
     .level-row {
       display: grid;
-      grid-template-columns: 44px 1fr auto 44px;
+      grid-template-columns: 44px 1fr 44px;
       gap: 8px;
       margin-bottom: 8px;
       align-items: center;
+      position: relative;
     }
 
     .level-btn,
@@ -512,10 +529,14 @@
     }
 
     .level-max-label {
-      min-width: 46px;
+      position: absolute;
+      right: 52px;
+      top: 50%;
+      transform: translateY(-50%);
       color: #ff8d8d;
       font-weight: 900;
       opacity: 0;
+      pointer-events: none;
     }
 
     .level-max-label.show {
@@ -1130,15 +1151,16 @@
     }
 
     .vanga-sparkle.verified-sparkle {
-      width: 13px;
-      height: 13px;
-      border-radius: 999px;
-      background: #1d9bf0;
+      width: 14px;
+      height: 14px;
+      border-radius: 1px;
+      background: #1677ff;
       color: white;
       font-size: 10px;
-      line-height: 13px;
+      line-height: 14px;
       text-align: center;
       font-weight: 900;
+      transform: rotate(14deg);
       box-shadow: 0 0 10px rgba(29, 155, 240, 0.75);
     }
 
@@ -1171,12 +1193,7 @@
     }
 
     .brainrot-top-secret {
-      background-image: linear-gradient(180deg, #8d38d8 0%, #4d167e 48%, #050505 100%);
-      background-size: 220% 220%;
-      color: transparent;
-      -webkit-background-clip: text;
-      background-clip: text;
-      animation: brainrotWaveUp 4.8s linear infinite;
+      color: #9b4de0;
       text-shadow: var(--top-secret-sparkles, 0 0 10px rgba(141, 56, 216, 0.30));
     }
 
@@ -1252,6 +1269,7 @@
       color: transparent;
       -webkit-background-clip: text;
       background-clip: text;
+      -webkit-text-fill-color: transparent;
       animation: brainrotWaveUp 4.8s linear infinite;
     }
 
@@ -1264,10 +1282,8 @@
     }
 
     .brainrot-slimy {
-      background-image: linear-gradient(90deg, #153a8b 0%, #245cd6 48%, #8fe4ff 100%);
-      color: transparent;
-      -webkit-background-clip: text;
-      background-clip: text;
+      color: #56a7ff;
+      text-shadow: 0 0 10px rgba(143, 228, 255, 0.34);
     }
 
     .verified-badge {
@@ -1278,14 +1294,39 @@
       width: 15px;
       height: 15px;
       margin-left: 5px;
-      border-radius: 999px;
-      background: #1d9bf0;
+      border-radius: 1px;
+      background: #1677ff;
       color: #fff;
-      font-size: 11px;
+      font-size: 0;
       line-height: 1;
       font-weight: 900;
+      transform: rotate(14deg);
       vertical-align: -1px;
       box-shadow: 0 0 10px rgba(29, 155, 240, 0.55);
+    }
+
+    .verified-badge::before {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 4px;
+      border-left: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      transform: rotate(-45deg);
+      top: 4px;
+      left: 3px;
+    }
+
+    .vanga-sparkle.verified-sparkle::before {
+      content: "";
+      position: absolute;
+      width: 7px;
+      height: 4px;
+      border-left: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      transform: rotate(-45deg);
+      top: 4px;
+      left: 3px;
     }
 
     .brainrot-exclusive-static {
@@ -1355,11 +1396,11 @@
 
     @keyframes bubbleFloat {
       0% {
-        transform: translate3d(-1.5vw, -1.5vh, 0) scale(1);
+        transform: translate3d(-4vw, -4vh, 0) scale(0.96);
       }
 
       100% {
-        transform: translate3d(1.5vw, 1.5vh, 0) scale(1.04);
+        transform: translate3d(4vw, 4vh, 0) scale(1.08);
       }
     }
 
@@ -1390,6 +1431,8 @@
 
     body.potato-high .stat-accent,
     body.potato-high .brainrot-name,
+    body.potato-high .brainrot-admin,
+    body.potato-high .brainrot-exclusive-static,
     body.potato-high .search-rarity-label,
     body.potato-high .mutation-bonus,
     body.potato-high .quality-label {
@@ -1403,6 +1446,29 @@
     body.potato-high .random-btn {
       background: #22304c !important;
       color: var(--text) !important;
+    }
+
+    body.potato-high .clear-search {
+      color: var(--muted) !important;
+      text-shadow: none !important;
+    }
+
+    body.potato-high .segmented button.active {
+      background: rgba(12, 19, 31, 0.65) !important;
+      color: var(--text) !important;
+    }
+
+    body.potato-high .animated-border-card::before,
+    body.potato-high .trait-card::before {
+      opacity: 0 !important;
+    }
+
+    body.potato-high .mutation.active,
+    body.potato-high .trait-card.active,
+    body.potato-high .animated-border-card.active {
+      background: #dce9ff !important;
+      border-color: rgba(102, 165, 255, 0.95) !important;
+      box-shadow: none !important;
     }
 
     body.potato-low .brainrot-wave-gray,
@@ -1469,39 +1535,6 @@
         <div class="badge" id="statusBadge">Invalid</div>
       </div>
 
-      <div class="top-controls">
-        <div>
-          <label class="label" for="languageSelect" data-i18n="language">Language</label>
-          <select class="language-select" id="languageSelect">
-            <option value="ms">Bahasa Melayu</option>
-            <option value="fil">Filipino</option>
-            <option value="en" selected>England [MAIN]</option>
-            <option value="bg">Български</option>
-            <option value="de">Deutsch</option>
-            <option value="ro">Română</option>
-            <option value="ru">Русский</option>
-            <option value="zh">中文</option>
-            <option value="ja">日本語</option>
-            <option value="es">Español</option>
-            <option value="it">Italiano</option>
-            <option value="pt">Português</option>
-            <option value="tr">Türkçe</option>
-            <option value="el">Ελληνικά</option>
-            <option value="lt">Lietuvių</option>
-          </select>
-        </div>
-        <div class="potato-control" id="potatoControl">
-          <label class="label" data-i18n="potatoLevel">Potato Level</label>
-          <button class="potato-toggle" id="potatoToggle" type="button">Off</button>
-          <div class="potato-help" data-i18n="potatoHelp">Makes it less laggier for bad devices</div>
-          <div class="potato-menu" id="potatoMenu">
-            <button type="button" data-potato-level="off">Off</button>
-            <button type="button" data-potato-level="low">Low</button>
-            <button type="button" data-potato-level="high">High</button>
-          </div>
-        </div>
-      </div>
-
       <div class="field">
         <label class="label" for="brainrotSearch">Brainrot</label>
         <div class="search-tools">
@@ -1546,13 +1579,14 @@
         <div class="level-row">
           <button class="level-btn" id="levelDown">−</button>
           <input class="level-display" id="levelValue" type="number" min="0" max="100" step="1" value="0" inputmode="numeric">
-          <span class="level-max-label" id="levelMaxLabel">[MAX]</span>
           <button class="level-btn" id="levelUp">+</button>
+          <span class="level-max-label" id="levelMaxLabel">[MAX]</span>
         </div>
         <div class="subtle" data-i18n="levelHint">+50% per level after 1</div>
       </div>
     </section>
 
+    <div class="panel-stack">
     <section class="panel">
       <div class="section-head" style="display:block;">
         <h3 style="margin-bottom:8px;" data-i18n="bonuses">Bonuses</h3>
@@ -1571,6 +1605,42 @@
         <div class="mutations-grid" id="mutationsGrid"></div>
       </div>
     </section>
+
+    <section class="panel">
+      <div class="top-controls" style="margin-bottom:0;">
+        <div>
+          <label class="label" for="languageSelect" data-i18n="language">Language</label>
+          <select class="language-select" id="languageSelect">
+            <option value="ms">Bahasa Melayu</option>
+            <option value="fil">Filipino</option>
+            <option value="en" selected>England [MAIN]</option>
+            <option value="bg">Български</option>
+            <option value="de">Deutsch</option>
+            <option value="ro">Română</option>
+            <option value="ru">Русский</option>
+            <option value="zh">中文</option>
+            <option value="ja">日本語</option>
+            <option value="es">Español</option>
+            <option value="it">Italiano</option>
+            <option value="pt">Português</option>
+            <option value="tr">Türkçe</option>
+            <option value="el">Ελληνικά</option>
+            <option value="lt">Lietuvių</option>
+          </select>
+        </div>
+        <div class="potato-control" id="potatoControl">
+          <label class="label" data-i18n="potatoLevel">Potato Level</label>
+          <button class="potato-toggle" id="potatoToggle" type="button">Off</button>
+          <div class="potato-help" data-i18n="potatoHelp">Makes it less laggier for bad devices</div>
+          <div class="potato-menu" id="potatoMenu">
+            <button type="button" data-potato-level="off">Off</button>
+            <button type="button" data-potato-level="low">Low</button>
+            <button type="button" data-potato-level="high">High</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
 
     <aside class="panel">
       <button class="action-btn" id="calculateBtn" data-i18n="calculateStat">Calculate Stat</button>
@@ -1762,7 +1832,7 @@
       { name: "NoahBlox", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
       { name: "Ethan", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
       { name: "Ekko", value: 125000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
-      { name: "Willozy", value: 500000000000000, unit: "$ / Fish", secretLabel: "Dev", hiddenExact: true },
+      { name: "Willozzy", value: 500000000000000, unit: "$ / Fish", secretLabel: "Dev", hiddenExact: true },
       { name: "Pyx", value: 500000000000000, unit: "$ / Fish", secretLabel: "Dev", hiddenExact: true },
       { name: "Pug", value: 500000000000000, unit: "$ / Fish", secretLabel: "Dev", hiddenExact: true },
       { name: "Slimy", value: 670000000000000, unit: "$ / Fish", secretLabel: "Dev", hiddenExact: true },
@@ -1928,7 +1998,7 @@
       "NoahBlox": "brainrot-top-secret",
       "Ethan": "brainrot-top-secret",
       "Ekko": "brainrot-top-secret",
-      "Willozy": "brainrot-dev",
+      "Willozzy": "brainrot-dev",
       "Pyx": "brainrot-dev",
       "Pug": "brainrot-dev",
       "Slimy": "brainrot-slimy",
@@ -2009,7 +2079,7 @@
       "Blingo Tentacolo": ["kraken"]
     };
 
-    const verifiedBrainrots = new Set(["Willozy", "Pyx", "Pug", "Slimy"]);
+    const verifiedBrainrots = new Set(["Willozzy", "Pyx", "Pug", "Slimy"]);
     const goatLabels = new Set(["G.O.A.T"]);
     const secretLikeLabels = new Set(["Helper", "Top Secret", "Dev", "G.O.A.T"]);
 
@@ -2289,9 +2359,6 @@
       const isTopSecret = host.dataset.vangaText === "top-secret";
       const isVerified = host.dataset.vangaText === "verified";
       sparkle.className = `vanga-sparkle${isTopSecret ? " square-sparkle" : ""}${isVerified ? " verified-sparkle" : ""}`;
-      if (isVerified) {
-        sparkle.textContent = "✓";
-      }
       sparkle.style.left = `${letter.offsetLeft + (letter.offsetWidth / 2) - 3}px`;
       sparkle.style.top = `${Math.max(0, letter.offsetTop + (letter.offsetHeight / 2) - 3)}px`;
       sparkle.style.setProperty("--sparkle-x", `${randomBetween(-28, 28).toFixed(1)}px`);
@@ -2588,6 +2655,11 @@
       els.statusBadge.textContent = state.selectedStat ? t.ready : t.invalid;
       els.search.placeholder = "Search brainrot...";
       els.percentSearch.placeholder = t.searchPercent;
+      document.querySelectorAll("[data-notify]").forEach((button) => {
+        if (state.notifiedTimers.has(button.dataset.notify)) {
+          button.textContent = "On";
+        }
+      });
       updateTimers();
       if (els.results.classList.contains("show")) updateSearchResults(els.search.value);
       if (els.percentResults.classList.contains("show")) updatePercentResults(els.percentSearch.value);
@@ -2598,12 +2670,13 @@
     }
 
     function getQualityLabel(value) {
-      if (value > 3000000000000) return "Ur lying gng";
-      if (value > 1200000000000) return "Leaderboard";
-      if (value > 900000000000) return "PRO";
+      if (value > 5000000000000) return "Ur lying gng";
+      if (value > 2500000000000) return "Leaderboard";
+      if (value > 1000000000000) return "Getting started";
+      if (value >= 500000000000) return "PRO";
       if (value < 100) return "Nub";
       if (value < 450) return "Mid";
-      if (value < 900000000000) return "Lil Pro";
+      if (value < 500000000000) return "Lil Pro";
       return "PRO";
     }
 
@@ -3072,7 +3145,13 @@
 
     document.querySelectorAll("[data-notify]").forEach((button) => {
       button.addEventListener("click", () => {
-        state.notifiedTimers.add(button.dataset.notify);
+        const key = button.dataset.notify;
+        if (state.notifiedTimers.has(key)) {
+          state.notifiedTimers.delete(key);
+          button.textContent = getCurrentT().notify || i18n.en.notify;
+          return;
+        }
+        state.notifiedTimers.add(key);
         button.textContent = "On";
         playNotifySound();
       });
