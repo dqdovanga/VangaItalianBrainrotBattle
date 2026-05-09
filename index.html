@@ -36,6 +36,30 @@
       padding: 16px;
     }
 
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -12vh -12vw;
+      pointer-events: none;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 14% 22%, var(--bubble-color-1, rgba(255,255,255,0.18)) 0 9vw, transparent 9.4vw),
+        radial-gradient(circle at 78% 16%, var(--bubble-color-2, rgba(255,255,255,0.13)) 0 12vw, transparent 12.4vw),
+        radial-gradient(circle at 28% 88%, var(--bubble-color-3, rgba(255,255,255,0.11)) 0 15vw, transparent 15.4vw),
+        radial-gradient(circle at 92% 82%, var(--bubble-color-4, rgba(255,255,255,0.10)) 0 10vw, transparent 10.4vw);
+      filter: blur(2px);
+      opacity: 0.95;
+      animation: bubbleFloat 12s ease-in-out infinite alternate;
+    }
+
+    body.potato-high::before {
+      display: none;
+    }
+
+    body.potato-low::before {
+      animation: none;
+    }
+
     .app {
       width: min(1220px, 100%);
       margin: 0 auto;
@@ -136,7 +160,7 @@
 
     .top-controls {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
       align-items: end;
       margin-bottom: 14px;
@@ -164,6 +188,61 @@
       font: inherit;
       font-weight: 700;
       cursor: pointer;
+    }
+
+    .potato-control {
+      position: relative;
+    }
+
+    .potato-toggle {
+      width: 100%;
+      height: 38px;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      background: rgba(12, 19, 31, 0.8);
+      color: var(--text);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .potato-help {
+      margin-top: 5px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .potato-menu {
+      display: none;
+      position: absolute;
+      z-index: 8;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      background: #16233a;
+      overflow: hidden;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .potato-control.open .potato-menu {
+      display: block;
+    }
+
+    .potato-menu button {
+      width: 100%;
+      min-height: 38px;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .potato-menu button:hover,
+    .potato-menu button.active {
+      background: rgba(79, 146, 255, 0.14);
     }
 
     .selected-brainrot-label {
@@ -322,8 +401,17 @@
     }
 
     .segmented button.accent-top-secret.active {
-      background: linear-gradient(180deg, #d8b2ff, #a36aff);
-      color: #1d1028;
+      background: linear-gradient(180deg, #6d26a8, #3a155a);
+      color: #f7ecff;
+    }
+
+    .segmented button.accent-admin-main.active {
+      background: linear-gradient(180deg, #ff5b5b, #070707);
+    }
+
+    .segmented button.accent-dev.active,
+    .segmented button.accent-slimy.active {
+      background: linear-gradient(180deg, #245cd6, #153a8b);
     }
 
     .segmented button.accent-light-yellow.active {
@@ -386,9 +474,10 @@
 
     .level-row {
       display: grid;
-      grid-template-columns: 44px 1fr 44px;
+      grid-template-columns: 44px 1fr auto 44px;
       gap: 8px;
       margin-bottom: 8px;
+      align-items: center;
     }
 
     .level-btn,
@@ -422,6 +511,17 @@
       margin: 0;
     }
 
+    .level-max-label {
+      min-width: 46px;
+      color: #ff8d8d;
+      font-weight: 900;
+      opacity: 0;
+    }
+
+    .level-max-label.show {
+      opacity: 1;
+    }
+
     .action-btn {
       width: 100%;
       height: 44px;
@@ -433,8 +533,18 @@
       transform: scale(1);
     }
 
+    aside.panel > .action-btn {
+      margin-top: 0;
+      margin-bottom: 18px;
+    }
+
     .action-btn:active:not(:disabled) {
       transform: scale(0.97);
+    }
+
+    .reject-shake {
+      animation: rejectShake 360ms ease;
+      box-shadow: 0 0 0 2px rgba(255, 127, 134, 0.45), 0 0 22px rgba(255, 127, 134, 0.32) !important;
     }
 
     .action-btn:disabled,
@@ -612,8 +722,34 @@
     }
 
     .accent-top-secret {
-      color: #d4a8ff;
-      text-shadow: var(--top-secret-sparkles, 0 0 10px rgba(212, 168, 255, 0.35));
+      color: #8d38d8;
+      text-shadow: var(--top-secret-sparkles, 0 0 10px rgba(141, 56, 216, 0.42));
+    }
+
+    .accent-admin-main,
+    .accent-dev,
+    .accent-slimy {
+      background-size: 220% 220%;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: brainrotWaveUp 4.8s linear infinite;
+    }
+
+    .accent-admin-main {
+      background-image: linear-gradient(180deg, #ff5b5b 0%, #8e1212 52%, #050505 100%);
+    }
+
+    .accent-dev {
+      color: #3f7ff0;
+      background-image: none;
+      -webkit-background-clip: initial;
+      background-clip: initial;
+      animation: none;
+    }
+
+    .accent-slimy {
+      background-image: linear-gradient(90deg, #153a8b 0%, #245cd6 48%, #8fe4ff 100%);
     }
 
     .accent-light-yellow {
@@ -699,8 +835,17 @@
     }
 
     .action-btn.accent-top-secret {
-      background: linear-gradient(180deg, #d8b2ff, #a36aff);
-      color: #1d1028;
+      background: linear-gradient(180deg, #6d26a8, #3a155a);
+      color: #f7ecff;
+    }
+
+    .action-btn.accent-admin-main {
+      background: linear-gradient(180deg, #ff5b5b, #070707);
+    }
+
+    .action-btn.accent-dev,
+    .action-btn.accent-slimy {
+      background: linear-gradient(180deg, #245cd6, #153a8b);
     }
 
     .action-btn.accent-light-yellow {
@@ -808,6 +953,32 @@
       padding: 14px;
     }
 
+    .timer-notify {
+      width: 100%;
+      height: 34px;
+      margin-top: 10px;
+      border: 1px solid var(--line-strong);
+      border-radius: 12px;
+      background: rgba(12, 19, 31, 0.75);
+      color: var(--text);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .timer-desc {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .timer-test {
+      margin-top: 6px;
+      color: #86cfff;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
     .timer-title {
       color: var(--muted);
       font-size: 13px;
@@ -828,9 +999,10 @@
 
     .search-results {
       position: absolute;
-      top: calc(100% + 6px);
-      left: 0;
-      right: 0;
+      top: 0;
+      left: auto;
+      right: calc(100% + 12px);
+      width: 360px;
       background: #16233a;
       border: 1px solid var(--line-strong);
       border-radius: 14px;
@@ -839,7 +1011,7 @@
       display: none;
       z-index: 5;
       overflow-y: auto;
-      max-height: 360px;
+      max-height: 640px;
       scrollbar-width: thin;
       scrollbar-color: rgba(127, 170, 245, 0.55) rgba(18, 31, 52, 0.65);
     }
@@ -849,15 +1021,22 @@
     }
 
     .search-results.size-small {
-      max-height: 240px;
+      max-height: 420px;
     }
 
     .search-results.size-medium {
-      max-height: 360px;
+      max-height: 640px;
     }
 
     .search-results.size-large {
-      max-height: 520px;
+      max-height: 780px;
+    }
+
+    .percent-search-wrap .search-results {
+      left: calc(100% + 12px);
+      right: auto;
+      top: 0;
+      width: 360px;
     }
 
     .search-results::-webkit-scrollbar {
@@ -944,10 +1123,23 @@
 
     .vanga-sparkle.square-sparkle {
       border-radius: 2px;
-      background: rgba(212, 168, 255, 0.95);
+      background: rgba(141, 56, 216, 0.95);
       box-shadow:
-        0 0 8px rgba(212, 168, 255, 0.74),
-        0 0 14px rgba(161, 104, 255, 0.55);
+        0 0 8px rgba(141, 56, 216, 0.74),
+        0 0 14px rgba(66, 24, 112, 0.55);
+    }
+
+    .vanga-sparkle.verified-sparkle {
+      width: 13px;
+      height: 13px;
+      border-radius: 999px;
+      background: #1d9bf0;
+      color: white;
+      font-size: 10px;
+      line-height: 13px;
+      text-align: center;
+      font-weight: 900;
+      box-shadow: 0 0 10px rgba(29, 155, 240, 0.75);
     }
 
     .brainrot-splash {
@@ -979,8 +1171,13 @@
     }
 
     .brainrot-top-secret {
-      color: #d4a8ff;
-      text-shadow: var(--top-secret-sparkles, 0 0 10px rgba(212, 168, 255, 0.35));
+      background-image: linear-gradient(180deg, #8d38d8 0%, #4d167e 48%, #050505 100%);
+      background-size: 220% 220%;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: brainrotWaveUp 4.8s linear infinite;
+      text-shadow: var(--top-secret-sparkles, 0 0 10px rgba(141, 56, 216, 0.30));
     }
 
     .brainrot-light-yellow {
@@ -1049,6 +1246,48 @@
       background-image: linear-gradient(120deg, #ff7b7b 0%, #ffba66 18%, #fff06e 36%, #82ef9f 54%, #7fd7ff 72%, #a88dff 86%, #ff8ddb 100%);
     }
 
+    .brainrot-admin-main {
+      background-image: linear-gradient(180deg, #ff5b5b 0%, #8e1212 52%, #050505 100%);
+      background-size: 220% 220%;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: brainrotWaveUp 4.8s linear infinite;
+    }
+
+    .brainrot-event {
+      color: #91d9ff;
+    }
+
+    .brainrot-dev {
+      color: #3f7ff0;
+    }
+
+    .brainrot-slimy {
+      background-image: linear-gradient(90deg, #153a8b 0%, #245cd6 48%, #8fe4ff 100%);
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .verified-badge {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 15px;
+      height: 15px;
+      margin-left: 5px;
+      border-radius: 999px;
+      background: #1d9bf0;
+      color: #fff;
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 900;
+      vertical-align: -1px;
+      box-shadow: 0 0 10px rgba(29, 155, 240, 0.55);
+    }
+
     .brainrot-exclusive-static {
       background-image: linear-gradient(120deg, #ff7b7b 0%, #ffba66 18%, #fff06e 36%, #82ef9f 54%, #7fd7ff 72%, #a88dff 86%, #ff8ddb 100%);
       color: transparent;
@@ -1058,8 +1297,12 @@
     }
 
     .brainrot-admin {
-      color: #d4a8ff;
-      text-shadow: 0 0 10px rgba(212, 168, 255, 0.35);
+      background-image: linear-gradient(180deg, #ff5b5b 0%, #8e1212 52%, #050505 100%);
+      background-size: 220% 220%;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: brainrotWaveUp 4.8s linear infinite;
     }
 
     @keyframes brainrotWave {
@@ -1110,6 +1353,78 @@
       }
     }
 
+    @keyframes bubbleFloat {
+      0% {
+        transform: translate3d(-1.5vw, -1.5vh, 0) scale(1);
+      }
+
+      100% {
+        transform: translate3d(1.5vw, 1.5vh, 0) scale(1.04);
+      }
+    }
+
+    @keyframes rejectShake {
+      0%, 100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-4px);
+        background: #ff6f77;
+      }
+
+      50% {
+        transform: translateX(4px);
+      }
+
+      75% {
+        transform: translateX(-2px);
+      }
+    }
+
+    body.potato-high *,
+    body.potato-low * {
+      animation: none !important;
+      transition: none !important;
+    }
+
+    body.potato-high .stat-accent,
+    body.potato-high .brainrot-name,
+    body.potato-high .search-rarity-label,
+    body.potato-high .mutation-bonus,
+    body.potato-high .quality-label {
+      color: var(--text) !important;
+      background-image: none !important;
+      text-shadow: none !important;
+      -webkit-text-fill-color: currentColor !important;
+    }
+
+    body.potato-high .action-btn,
+    body.potato-high .random-btn {
+      background: #22304c !important;
+      color: var(--text) !important;
+    }
+
+    body.potato-low .brainrot-wave-gray,
+    body.potato-low .brainrot-yellow-orange,
+    body.potato-low .brainrot-white-black-mid,
+    body.potato-low .brainrot-wave-rainbow,
+    body.potato-low .brainrot-wave-black-white,
+    body.potato-low .brainrot-wave-sun,
+    body.potato-low .brainrot-wave-ocean,
+    body.potato-low .brainrot-rainbow,
+    body.potato-low .brainrot-top-secret,
+    body.potato-low .brainrot-admin-main {
+      animation: none !important;
+    }
+
+    body.potato-high .vanga-sparkle,
+    body.potato-high .brainrot-splash,
+    body.potato-low .vanga-sparkle,
+    body.potato-low .brainrot-splash {
+      display: none !important;
+    }
+
     .empty-state {
       padding: 12px 14px;
       color: var(--muted);
@@ -1123,6 +1438,15 @@
 
       .timer-board {
         grid-template-columns: 1fr;
+      }
+
+      .search-results,
+      .percent-search-wrap .search-results {
+        top: calc(100% + 6px);
+        left: 0;
+        right: 0;
+        width: auto;
+        max-height: 360px;
       }
     }
 
@@ -1149,24 +1473,33 @@
         <div>
           <label class="label" for="languageSelect" data-i18n="language">Language</label>
           <select class="language-select" id="languageSelect">
-            <option value="ms">Malay</option>
+            <option value="ms">Bahasa Melayu</option>
             <option value="fil">Filipino</option>
-            <option value="en" selected>England</option>
-            <option value="bg">Bulgarian</option>
-            <option value="de">German</option>
-            <option value="ro">Romanian</option>
-            <option value="ru">Russian</option>
-            <option value="zh">Chinese</option>
-            <option value="ja">Japanese</option>
-            <option value="es">Spanish</option>
-            <option value="it">Italian</option>
-            <option value="pt">Portuguese</option>
-            <option value="tr">Turkish</option>
-            <option value="el">Greek</option>
-            <option value="lt">Lithuanian</option>
+            <option value="en" selected>England [MAIN]</option>
+            <option value="bg">Български</option>
+            <option value="de">Deutsch</option>
+            <option value="ro">Română</option>
+            <option value="ru">Русский</option>
+            <option value="zh">中文</option>
+            <option value="ja">日本語</option>
+            <option value="es">Español</option>
+            <option value="it">Italiano</option>
+            <option value="pt">Português</option>
+            <option value="tr">Türkçe</option>
+            <option value="el">Ελληνικά</option>
+            <option value="lt">Lietuvių</option>
           </select>
         </div>
-        <button class="random-btn" id="randomBtn" data-i18n="random">Random</button>
+        <div class="potato-control" id="potatoControl">
+          <label class="label" data-i18n="potatoLevel">Potato Level</label>
+          <button class="potato-toggle" id="potatoToggle" type="button">Off</button>
+          <div class="potato-help" data-i18n="potatoHelp">Makes it less laggier for bad devices</div>
+          <div class="potato-menu" id="potatoMenu">
+            <button type="button" data-potato-level="off">Off</button>
+            <button type="button" data-potato-level="low">Low</button>
+            <button type="button" data-potato-level="high">High</button>
+          </div>
+        </div>
       </div>
 
       <div class="field">
@@ -1185,6 +1518,7 @@
           <button class="clear-search" id="clearSearch" aria-label="Clear search">×</button>
           <div class="search-results" id="searchResults"></div>
         </div>
+        <button class="random-btn" id="randomBtn" data-i18n="random" style="width:100%; margin-top:10px;">Random</button>
       </div>
 
       <div class="card">
@@ -1211,7 +1545,8 @@
         <label class="label" data-i18n="level">Level</label>
         <div class="level-row">
           <button class="level-btn" id="levelDown">−</button>
-          <input class="level-display" id="levelValue" type="number" min="1" step="1" value="1" inputmode="numeric">
+          <input class="level-display" id="levelValue" type="number" min="0" max="100" step="1" value="0" inputmode="numeric">
+          <span class="level-max-label" id="levelMaxLabel">[MAX]</span>
           <button class="level-btn" id="levelUp">+</button>
         </div>
         <div class="subtle" data-i18n="levelHint">+50% per level after 1</div>
@@ -1286,14 +1621,23 @@
     <div class="timer-card">
       <div class="timer-title" data-i18n="aaMorning">1st AA</div>
       <div class="timer-value" data-timer="aaMorning"></div>
+      <button class="timer-notify" type="button" data-notify="aaMorning" data-i18n="notify">Notify</button>
+      <div class="timer-desc" data-i18n="notifyDesc">Notifies you when the timer ends</div>
+      <div class="timer-test">[TEST]</div>
     </div>
     <div class="timer-card">
       <div class="timer-title" data-i18n="aaEvening">2nd AA</div>
       <div class="timer-value" data-timer="aaEvening"></div>
+      <button class="timer-notify" type="button" data-notify="aaEvening" data-i18n="notify">Notify</button>
+      <div class="timer-desc" data-i18n="notifyDesc">Notifies you when the timer ends</div>
+      <div class="timer-test">[TEST]</div>
     </div>
     <div class="timer-card">
       <div class="timer-title" data-i18n="tacoTuesday">Taco Tuesday (SCRAPPED)</div>
       <div class="timer-value" data-timer="tacoTuesday"></div>
+      <button class="timer-notify" type="button" data-notify="tacoTuesday" data-i18n="notify">Notify</button>
+      <div class="timer-desc" data-i18n="notifyDesc">Notifies you when the timer ends</div>
+      <div class="timer-test">[TEST]</div>
     </div>
   </section>
   <div class="page-signature">W Vanga</div>
@@ -1327,6 +1671,10 @@
       { name: "Glorbo Fruttodrillo", value: 187500, unit: "$ / Fish" },
       { name: "Pakrahmatmamat", value: 225000, unit: "$ / Fish" },
       { name: "Karkerkar Kurkur", value: 350000, unit: "$ / Fish" },
+      { name: "Joe Pork", value: 25000, unit: "$ / Fish" },
+      { name: "Smurf Cat", value: 75000, unit: "$ / Fish" },
+      { name: "Skibo Boi", value: 250000, unit: "$ / Fish" },
+      { name: "Tuesday Hand", value: 500000, unit: "$ / Fish" },
       { name: "La Vacca Saturno Saturnita", value: 1000000, unit: "$ / Fish" },
       { name: "Tic Tac Sahur", value: 1750000, unit: "$ / Fish" },
       { name: "Pot Hotspot", value: 2250000, unit: "$ / Fish" },
@@ -1367,6 +1715,11 @@
       { name: "Crabbo Limonetta", value: 95000000, unit: "$ / Fish" },
       { name: "Bandito Axolito", value: 110000000, unit: "$ / Fish" },
       { name: "Stoppo Luminino", value: 120000000, unit: "$ / Fish" },
+      { name: "Tralalelodon", value: 55000000, unit: "$ / Fish" },
+      { name: "Orcadon", value: 58500000, unit: "$ / Fish" },
+      { name: "Blingo Tentacolo", value: 62500000, unit: "$ / Fish" },
+      { name: "Eviledon", value: 65000000, unit: "$ / Fish" },
+      { name: "Moby Bobby", value: 75000000, unit: "$ / Fish" },
       { name: "Money Money Man", value: 125000000, unit: "$ / Fish" },
       { name: "Signore Carapace", value: 175000000, unit: "$ / Fish" },
       { name: "Karloo", value: 225000000, unit: "$ / Fish" },
@@ -1387,24 +1740,33 @@
       { name: "Rico Dinero", value: 6000000000, unit: "$ / Fish" },
       { name: "Arca Dragon", value: 7000000000, unit: "$ / Fish" },
       { name: "Bananito", value: 8000000000, unit: "$ / Fish" },
-      { name: "Strawberrita", value: 0, unit: "$ / Fish", unavailable: true },
-      { name: "CheeseBurger", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
-      { name: "Chanchan", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
-      { name: "Willi", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
-      { name: "Ace", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
-      { name: "Harsh", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
-      { name: "Resh", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
-      { name: "Saderrax", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
-      { name: "BLSP", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
-      { name: "Shapin", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
-      { name: "Joel", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
-      { name: "Sbaynation", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
-      { name: "Pasya", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
-      { name: "Patryk", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
-      { name: "IP283", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
-      { name: "Kamil", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
-      { name: "Seal", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
-      { name: "Finger", value: 100000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
+      { name: "Strawberrita", value: 9000000000, unit: "$ / Fish" },
+      { name: "Cheesebrgr", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Chanchan", value: 1000000000000000, unit: "$ / Fish", secretLabel: "G.O.A.T", hiddenExact: true },
+      { name: "Willi", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Ace", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Harsh7", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Resh", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Saderrax", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "BLSP", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Shapin", value: 150000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Joel", value: 250000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
+      { name: "Sbaynation", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Pasya", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Patryk", value: 250000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
+      { name: "IP283", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Kamil", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Seal", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Finger", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "G4NZ", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "NoahBlox", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Ethan", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Ekko", value: 125000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Willozy", value: 500000000000000, unit: "$ / Fish", secretLabel: "Dev", hiddenExact: true },
+      { name: "Pyx", value: 500000000000000, unit: "$ / Fish", secretLabel: "Dev", hiddenExact: true },
+      { name: "Pug", value: 500000000000000, unit: "$ / Fish", secretLabel: "Dev", hiddenExact: true },
+      { name: "Slimy", value: 670000000000000, unit: "$ / Fish", secretLabel: "Dev", hiddenExact: true },
+      { name: "God Triple T", value: 1000000000000000, unit: "$ / Fish", secretLabel: "G.O.A.T", hiddenExact: true },
       { name: "Vanga", value: 1000000000000000, unit: "$ / Fish", secretLabel: "G.O.A.T", hiddenExact: true }
     ];
 
@@ -1430,7 +1792,9 @@
       "brainrot-purple": ["#b68cff", "#b68cff", "#b68cff", "#b68cff"],
       "brainrot-light-yellow": ["#ffe679", "#ffe679", "#ffe679", "#ffe679"],
       "brainrot-red": ["#ff7a7a", "#ff7a7a", "#ff7a7a", "#ff7a7a"],
+      "brainrot-admin-main": ["#ff5b5b", "#8e1212", "#050505", "#ff5b5b"],
       "brainrot-dark-pink": ["#e08bc2", "#e08bc2", "#e08bc2", "#e08bc2"],
+      "brainrot-event": ["#91d9ff", "#91d9ff", "#91d9ff", "#91d9ff"],
       "brainrot-wave-gray": ["#0f1117", "#666b74", "#d6d9df", "#555a63"],
       "brainrot-yellow-orange": ["#ffe86f", "#ffd84e", "#ffb347", "#ff9937"],
       "brainrot-white-black-mid": ["#ffffff", "#e7e7e7", "#111111", "#ebebeb"],
@@ -1439,8 +1803,10 @@
       "brainrot-wave-sun": ["#ffef7e", "#ffc85e", "#ffb347", "#ff9937"],
       "brainrot-wave-ocean": ["#c7f6ff", "#6cc3ff", "#3f7ff0", "#16358f"],
       "brainrot-vanga": ["#eefcff", "#baf0ff", "#7fd7ff", "#96f7ff"],
+      "brainrot-dev": ["#5b8dff", "#245cd6", "#153a8b", "#1d9bf0"],
+      "brainrot-slimy": ["#245cd6", "#153a8b", "#8fe4ff", "#96f7ff"],
       "brainrot-rainbow": ["#ff7b7b", "#ffba66", "#7fd7ff", "#a88dff"],
-      "brainrot-top-secret": ["#f0dcff", "#d4a8ff", "#b77cff", "#8f54e8"]
+      "brainrot-top-secret": ["#8d38d8", "#4d167e", "#050505", "#8d38d8"]
     };
 
     const brainrotColors = {
@@ -1471,6 +1837,10 @@
       "Glorbo Fruttodrillo": "brainrot-red",
       "Pakrahmatmamat": "brainrot-red",
       "Karkerkar Kurkur": "brainrot-red",
+      "Joe Pork": "brainrot-admin-main",
+      "Smurf Cat": "brainrot-admin-main",
+      "Skibo Boi": "brainrot-admin-main",
+      "Tuesday Hand": "brainrot-admin-main",
       "La Vacca Saturno Saturnita": "brainrot-wave-gray",
       "Tic Tac Sahur": "brainrot-wave-gray",
       "Pot Hotspot": "brainrot-wave-gray",
@@ -1511,6 +1881,11 @@
       "Crabbo Limonetta": "brainrot-dark-pink",
       "Bandito Axolito": "brainrot-dark-pink",
       "Stoppo Luminino": "brainrot-dark-pink",
+      "Tralalelodon": "brainrot-event",
+      "Orcadon": "brainrot-event",
+      "Blingo Tentacolo": "brainrot-event",
+      "Eviledon": "brainrot-event",
+      "Moby Bobby": "brainrot-event",
       "Money Money Man": "brainrot-wave-rainbow",
       "Signore Carapace": "brainrot-wave-rainbow",
       "Karloo": "brainrot-wave-rainbow",
@@ -1532,11 +1907,11 @@
       "Arca Dragon": "brainrot-rainbow",
       "Bananito": "brainrot-rainbow",
       "Strawberrita": "brainrot-rainbow",
-      "CheeseBurger": "brainrot-top-secret",
-      "Chanchan": "brainrot-top-secret",
+      "Cheesebrgr": "brainrot-top-secret",
+      "Chanchan": "brainrot-vanga",
       "Willi": "brainrot-top-secret",
       "Ace": "brainrot-top-secret",
-      "Harsh": "brainrot-top-secret",
+      "Harsh7": "brainrot-top-secret",
       "Resh": "brainrot-top-secret",
       "Saderrax": "brainrot-top-secret",
       "BLSP": "brainrot-top-secret",
@@ -1549,6 +1924,15 @@
       "Kamil": "brainrot-top-secret",
       "Seal": "brainrot-top-secret",
       "Finger": "brainrot-top-secret",
+      "G4NZ": "brainrot-top-secret",
+      "NoahBlox": "brainrot-top-secret",
+      "Ethan": "brainrot-top-secret",
+      "Ekko": "brainrot-top-secret",
+      "Willozy": "brainrot-dev",
+      "Pyx": "brainrot-dev",
+      "Pug": "brainrot-dev",
+      "Slimy": "brainrot-slimy",
+      "God Triple T": "brainrot-vanga",
       "Vanga": "brainrot-vanga"
     };
 
@@ -1559,7 +1943,9 @@
       "brainrot-purple": "accent-purple",
       "brainrot-light-yellow": "accent-light-yellow",
       "brainrot-red": "accent-red",
+      "brainrot-admin-main": "accent-admin-main",
       "brainrot-dark-pink": "accent-dark-pink",
+      "brainrot-event": "accent-light-blue",
       "brainrot-wave-gray": "accent-wave-gray",
       "brainrot-yellow-orange": "accent-yellow-orange",
       "brainrot-white-black-mid": "accent-white-black-mid",
@@ -1568,6 +1954,8 @@
       "brainrot-wave-sun": "accent-wave-sun",
       "brainrot-wave-ocean": "accent-wave-ocean",
       "brainrot-vanga": "accent-vanga",
+      "brainrot-dev": "accent-dev",
+      "brainrot-slimy": "accent-slimy",
       "brainrot-rainbow": "accent-rainbow",
       "brainrot-top-secret": "accent-top-secret"
     };
@@ -1579,17 +1967,21 @@
       "brainrot-purple": { order: 4, label: "Epic", className: "brainrot-purple" },
       "brainrot-light-yellow": { order: 5, label: "Legendary", className: "brainrot-light-yellow" },
       "brainrot-red": { order: 6, label: "Mythic", className: "brainrot-red" },
-      "brainrot-wave-gray": { order: 7, label: "Secret", className: "brainrot-wave-gray" },
-      "brainrot-yellow-orange": { order: 8, label: "Exotic", className: "brainrot-yellow-orange" },
-      "brainrot-white-black-mid": { order: 9, label: "OG", className: "brainrot-white-black-mid" },
-      "brainrot-dark-pink": { order: 10, label: "Divine", className: "brainrot-dark-pink" },
-      "brainrot-wave-rainbow": { order: 11, label: "GOD", className: "brainrot-wave-rainbow" },
-      "brainrot-wave-black-white": { order: 12, label: "???", className: "brainrot-wave-black-white" },
-      "brainrot-wave-sun": { order: 13, label: "Celest", className: "brainrot-wave-sun" },
-      "brainrot-wave-ocean": { order: 14, label: "Beyond", className: "brainrot-wave-ocean" },
-      "brainrot-rainbow": { order: 15, label: "INFINITY", className: "brainrot-rainbow" },
-      "brainrot-top-secret": { order: 16, label: "Top Secret", className: "brainrot-top-secret" },
-      "brainrot-vanga": { order: 17, label: "G.O.A.T", className: "brainrot-vanga" }
+      "brainrot-admin-main": { order: 7, label: "Admin", className: "brainrot-admin-main" },
+      "brainrot-wave-gray": { order: 8, label: "Secret", className: "brainrot-wave-gray" },
+      "brainrot-yellow-orange": { order: 9, label: "Exotic", className: "brainrot-yellow-orange" },
+      "brainrot-white-black-mid": { order: 10, label: "OG", className: "brainrot-white-black-mid" },
+      "brainrot-dark-pink": { order: 11, label: "Divine", className: "brainrot-dark-pink" },
+      "brainrot-event": { order: 12, label: "Event", className: "brainrot-event" },
+      "brainrot-wave-rainbow": { order: 13, label: "GOD", className: "brainrot-wave-rainbow" },
+      "brainrot-wave-black-white": { order: 14, label: "???", className: "brainrot-wave-black-white" },
+      "brainrot-wave-sun": { order: 15, label: "Celest", className: "brainrot-wave-sun" },
+      "brainrot-wave-ocean": { order: 16, label: "Beyond", className: "brainrot-wave-ocean" },
+      "brainrot-rainbow": { order: 17, label: "INFINITY", className: "brainrot-rainbow" },
+      "brainrot-top-secret": { order: 18, label: "Helper", className: "brainrot-top-secret" },
+      "brainrot-dev": { order: 19, label: "Dev", className: "brainrot-dev" },
+      "brainrot-slimy": { order: 19, label: "Dev", className: "brainrot-slimy" },
+      "brainrot-vanga": { order: 20, label: "G.O.A.T", className: "brainrot-vanga" }
     };
 
     const percentBrainrots = [
@@ -1607,6 +1999,20 @@
       { name: "Rainbow Santteo", percent: 200, type: "Exclusive" }
     ];
 
+    const brainrotAliases = {
+      "G4NZ": ["ganz", "g4nzzz", "ganzzz"],
+      "Harsh7": ["harsh"],
+      "Pyx": ["polaris", "polarisprog"],
+      "NoahBlox": ["noah", "noahbloxholder"],
+      "Cheesebrgr": ["cheeseburger"],
+      "Ethan": ["ethqw", "ethqw11", "ethan11"],
+      "Blingo Tentacolo": ["kraken"]
+    };
+
+    const verifiedBrainrots = new Set(["Willozy", "Pyx", "Pug", "Slimy"]);
+    const goatLabels = new Set(["G.O.A.T"]);
+    const secretLikeLabels = new Set(["Helper", "Top Secret", "Dev", "G.O.A.T"]);
+
     const darkTextAccents = new Set([
       "accent-light-yellow",
       "accent-yellow-orange",
@@ -1622,7 +2028,9 @@
       hasCalculated: false,
       finalValue: null,
       selectedPercentBrainrot: null,
-      language: "en"
+      language: "en",
+      potatoLevel: "off",
+      notifiedTimers: new Set()
     };
 
     const activeVangaTimers = new Map();
@@ -1650,6 +2058,9 @@
       calculateBtn: document.getElementById("calculateBtn"),
       randomBtn: document.getElementById("randomBtn"),
       languageSelect: document.getElementById("languageSelect"),
+      potatoControl: document.getElementById("potatoControl"),
+      potatoToggle: document.getElementById("potatoToggle"),
+      potatoMenu: document.getElementById("potatoMenu"),
       qualityLabel: document.getElementById("qualityLabel"),
       percentSection: document.getElementById("percentSection"),
       percentSearch: document.getElementById("percentSearch"),
@@ -1658,7 +2069,8 @@
       calculatePercentBtn: document.getElementById("calculatePercentBtn"),
       percentResult: document.getElementById("percentResult"),
       levelDown: document.getElementById("levelDown"),
-      levelUp: document.getElementById("levelUp")
+      levelUp: document.getElementById("levelUp"),
+      levelMaxLabel: document.getElementById("levelMaxLabel")
     };
 
     const i18n = {
@@ -1671,7 +2083,8 @@
         mutationMultiplier: "Mutation multiplier", formula: "Base × all multipliers", percentBrainrot: "Percent Brainrot",
         calculatePercent: "Calculate % Brainrot", searchPercent: "Search percent brainrot...", noMatches: "No matching stats found.",
         unavailable: "Unavailable", days: "d", hours: "h", minutes: "m", seconds: "s", aaMorning: "1st AA", aaEvening: "2nd AA",
-        tacoTuesday: "Taco Tuesday (SCRAPPED)"
+        tacoTuesday: "Taco Tuesday (SCRAPPED)", potatoLevel: "Potato Level", potatoHelp: "Makes it less laggier for bad devices",
+        notify: "Notify", notifyDesc: "Notifies you when the timer ends"
       },
       ms: { inputs: "Input", invalid: "Tidak sah", ready: "Sedia", language: "Bahasa", random: "Rawak", listSize: "Saiz senarai", small: "Kecil", medium: "Sederhana", large: "Besar", baseStat: "Stat Asas", mutationTotal: "Jumlah Mutasi", stacked: "terkumpul", rank: "Rank", rankHint: "+15% setiap rank", level: "Tahap", levelHint: "+50% setiap tahap selepas 1", bonuses: "Bonus", bonusHint: "Tekan untuk tukar. Peratusan terkumpul.", traits: "Trait", mutations: "Mutasi", calculateStat: "Kira Stat", finalStat: "Stat Akhir", rankMultiplier: "Pengganda rank", levelMultiplier: "Pengganda tahap", mutationMultiplier: "Pengganda mutasi", formula: "Asas × semua pengganda", percentBrainrot: "Brainrot Peratus", calculatePercent: "Kira % Brainrot", searchPercent: "Cari brainrot peratus...", noMatches: "Tiada stat sepadan.", unavailable: "Tidak tersedia", days: "h", hours: "j", minutes: "m", seconds: "s", aaMorning: "AA pertama", aaEvening: "AA kedua", tacoTuesday: "Taco Tuesday (DIBATALKAN)" },
       fil: { inputs: "Inputs", invalid: "Hindi pwede", ready: "Handa", language: "Wika", random: "Random", listSize: "Laki ng listahan", small: "Maliit", medium: "Katamtaman", large: "Malaki", baseStat: "Base Stat", mutationTotal: "Kabuuang Mutation", stacked: "naka-stack", rank: "Rank", rankHint: "+15% bawat rank", level: "Level", levelHint: "+50% bawat level pagkatapos ng 1", bonuses: "Bonuses", bonusHint: "I-tap para i-toggle. Naiipon ang percentages.", traits: "Traits", mutations: "Mutations", calculateStat: "Kalkulahin Stat", finalStat: "Final Stat", rankMultiplier: "Rank multiplier", levelMultiplier: "Level multiplier", mutationMultiplier: "Mutation multiplier", formula: "Base × lahat ng multiplier", percentBrainrot: "Percent Brainrot", calculatePercent: "Kalkulahin % Brainrot", searchPercent: "Hanap percent brainrot...", noMatches: "Walang tugmang stat.", unavailable: "Hindi available", days: "d", hours: "o", minutes: "m", seconds: "s", aaMorning: "1st AA", aaEvening: "2nd AA", tacoTuesday: "Taco Tuesday (SCRAPPED)" },
@@ -1761,7 +2174,32 @@
     }
 
     function shouldHideFromOpenList(stat) {
-      return stat.name === "Ace" || stat.secretLabel === "Top Secret" || stat.secretLabel === "G.O.A.T";
+      return stat.name === "Ace" || secretLikeLabels.has(stat.secretLabel);
+    }
+
+    function getSearchTokens(stat) {
+      return [stat.name, ...(brainrotAliases[stat.name] || [])].map((token) => token.toLowerCase());
+    }
+
+    function matchesBrainrotSearch(stat, normalized) {
+      const tokens = getSearchTokens(stat);
+      if (!normalized) {
+        return !shouldHideFromOpenList(stat);
+      }
+      if (stat.hiddenExact) {
+        return tokens.some((token) => token === normalized);
+      }
+      return tokens.some((token) => token.includes(normalized));
+    }
+
+    function isSecretExactQuery(normalized) {
+      return baseStats.some((stat) =>
+        stat.hiddenExact && getSearchTokens(stat).some((token) => token === normalized)
+      );
+    }
+
+    function isTopSecretLike(stat) {
+      return secretLikeLabels.has(stat?.secretLabel);
     }
 
     function clearAccentClasses(element) {
@@ -1793,9 +2231,9 @@
         const x = randomBetween(-18, 18).toFixed(1);
         const y = randomBetween(-14, 14).toFixed(1);
         const size = randomBetween(0, 1.8).toFixed(1);
-        sparkles.push(`${x}px ${y}px 0 ${size}px rgba(212,168,255,0.9)`);
+        sparkles.push(`${x}px ${y}px 0 ${size}px rgba(141,56,216,0.9)`);
       }
-      sparkles.push("0 0 10px rgba(212,168,255,0.35)");
+      sparkles.push("0 0 10px rgba(141,56,216,0.42)");
       return sparkles.join(", ");
     }
 
@@ -1818,7 +2256,7 @@
     }
 
     function renderBrainrotNameMarkup(name, colorClass) {
-      if (colorClass !== "brainrot-vanga" && colorClass !== "brainrot-top-secret") {
+      if (colorClass !== "brainrot-vanga" && colorClass !== "brainrot-top-secret" && colorClass !== "brainrot-dev" && colorClass !== "brainrot-slimy") {
         return name;
       }
 
@@ -1826,8 +2264,11 @@
         `<span class="vanga-letter">${letter === " " ? "&nbsp;" : letter}</span>`
       ).join("");
 
-      const sparkleType = colorClass === "brainrot-top-secret" ? "top-secret" : "vanga";
-      return `<span class="vanga-host" data-vanga-text="${sparkleType}">${letters}</span>`;
+      const sparkleType = colorClass === "brainrot-top-secret"
+        ? "top-secret"
+        : (colorClass === "brainrot-dev" || colorClass === "brainrot-slimy") ? "verified" : "vanga";
+      const badge = verifiedBrainrots.has(name) ? `<span class="verified-badge">✓</span>` : "";
+      return `<span class="vanga-host" data-vanga-text="${sparkleType}">${letters}${badge}</span>`;
     }
 
     function clearVangaSparkleTimers() {
@@ -1846,14 +2287,18 @@
       const letter = letters[Math.floor(Math.random() * letters.length)];
       const sparkle = document.createElement("span");
       const isTopSecret = host.dataset.vangaText === "top-secret";
-      sparkle.className = `vanga-sparkle${isTopSecret ? " square-sparkle" : ""}`;
+      const isVerified = host.dataset.vangaText === "verified";
+      sparkle.className = `vanga-sparkle${isTopSecret ? " square-sparkle" : ""}${isVerified ? " verified-sparkle" : ""}`;
+      if (isVerified) {
+        sparkle.textContent = "✓";
+      }
       sparkle.style.left = `${letter.offsetLeft + (letter.offsetWidth / 2) - 3}px`;
       sparkle.style.top = `${Math.max(0, letter.offsetTop + (letter.offsetHeight / 2) - 3)}px`;
-      sparkle.style.setProperty("--sparkle-x", `${randomBetween(-8, 8).toFixed(1)}px`);
-      sparkle.style.setProperty("--sparkle-y", `${randomBetween(-22, -10).toFixed(1)}px`);
+      sparkle.style.setProperty("--sparkle-x", `${randomBetween(-28, 28).toFixed(1)}px`);
+      sparkle.style.setProperty("--sparkle-y", `${randomBetween(-28, 28).toFixed(1)}px`);
       sparkle.style.background = isTopSecret
-        ? "rgba(212,168,255,0.95)"
-        : Math.random() > 0.45 ? "rgba(255,255,255,0.96)" : "rgba(143,228,255,0.88)";
+        ? "rgba(141,56,216,0.95)"
+        : isVerified ? "#1d9bf0" : Math.random() > 0.45 ? "rgba(255,255,255,0.96)" : "rgba(143,228,255,0.88)";
       host.appendChild(sparkle);
 
       window.setTimeout(() => {
@@ -1921,6 +2366,15 @@
       return "72px";
     }
 
+    function updateBackgroundBubbles() {
+      const colors = state.selectedStat
+        ? getSelectedAnimatedPair()
+        : ["#ffffff", "#ffffff", "#ffffff", "#ffffff"];
+      colors.forEach((color, index) => {
+        document.body.style.setProperty(`--bubble-color-${index + 1}`, `${color}26`);
+      });
+    }
+
     function applySelectedAccent() {
       clearAccentClasses(els.calculateBtn);
       clearAccentClasses(els.baseStat);
@@ -1950,13 +2404,16 @@
       applyTopSecretSparkles(els.formulaValue, false);
 
       if (!state.selectedStat) {
+        updateBackgroundBubbles();
         return;
       }
 
       const accentClass = accentMap[brainrotColors[state.selectedStat.name]];
       if (!accentClass) {
+        updateBackgroundBubbles();
         return;
       }
+      updateBackgroundBubbles();
 
       const isVanga = accentClass === "accent-vanga";
       const isTopSecret = accentClass === "accent-top-secret";
@@ -2019,10 +2476,19 @@
 
     function updateControlLocking() {
       const hasSelection = Boolean(state.selectedStat);
-      els.calculateBtn.disabled = !hasSelection;
-      els.levelDown.disabled = !hasSelection;
-      els.levelUp.disabled = !hasSelection;
-      els.levelValue.disabled = !hasSelection;
+      els.calculateBtn.disabled = false;
+      els.levelDown.disabled = false;
+      els.levelUp.disabled = false;
+      els.levelValue.disabled = false;
+      els.levelValue.readOnly = !hasSelection;
+    }
+
+    function rejectControl(element) {
+      if (!element) return;
+      element.classList.remove("reject-shake");
+      void element.offsetWidth;
+      element.classList.add("reject-shake");
+      window.setTimeout(() => element.classList.remove("reject-shake"), 380);
     }
 
     function renderRanks() {
@@ -2030,7 +2496,7 @@
       const accentClass = state.selectedStat ? accentMap[brainrotColors[state.selectedStat.name]] : "";
       for (let i = 0; i <= 4; i += 1) {
         const button = document.createElement("button");
-        button.disabled = !state.selectedStat;
+        button.disabled = false;
         button.textContent = String(i);
         if (state.rank === i) {
           button.classList.add("active");
@@ -2039,10 +2505,15 @@
           }
         }
         button.addEventListener("click", () => {
+          if (!state.selectedStat) {
+            rejectControl(button);
+            return;
+          }
           state.rank = i;
           invalidateCalculatedResult();
           renderRanks();
           calculate();
+          emitBrainrotSplash(button);
         });
         els.rankSelector.appendChild(button);
       }
@@ -2052,13 +2523,16 @@
       container.innerHTML = "";
 
       for (const [name, bonus] of items) {
+        if (name === "Ligma (Joke)" && !isTopSecretLike(state.selectedStat)) {
+          continue;
+        }
         const item = document.createElement("button");
         const isTrait = type === "trait";
         const isActive = state.selectedMutations.has(name);
         const [color1, color2, color3, color4] = getSelectedAnimatedPair();
 
         item.className = `mutation animated-border-card${isTrait ? " trait-card" : ""}`;
-        item.disabled = !state.selectedStat;
+        item.disabled = false;
         if (isActive) item.classList.add("active");
         item.style.setProperty("--bonus-color-1", color1);
         item.style.setProperty("--bonus-color-2", color2);
@@ -2072,6 +2546,10 @@
           </span>
         `;
         item.addEventListener("click", () => {
+          if (!state.selectedStat) {
+            rejectControl(item);
+            return;
+          }
           if (isTrait) {
             if (state.selectedMutations.has(name)) {
               state.selectedMutations.delete(name);
@@ -2105,7 +2583,7 @@
       const t = getCurrentT();
       document.querySelectorAll("[data-i18n]").forEach((node) => {
         const key = node.dataset.i18n;
-        if (t[key]) node.textContent = t[key];
+        if (t[key] || i18n.en[key]) node.textContent = t[key] || i18n.en[key];
       });
       els.statusBadge.textContent = state.selectedStat ? t.ready : t.invalid;
       els.search.placeholder = "Search brainrot...";
@@ -2140,8 +2618,8 @@
         dot.style.left = `${rect.left + rect.width / 2}px`;
         dot.style.top = `${rect.top + rect.height / 2}px`;
         dot.style.setProperty("--splash-color", [color1, color2, color3, color4][i % 4]);
-        dot.style.setProperty("--splash-x", `${randomBetween(-72, 72).toFixed(1)}px`);
-        dot.style.setProperty("--splash-y", `${randomBetween(-62, 44).toFixed(1)}px`);
+        dot.style.setProperty("--splash-x", `${randomBetween(-82, 82).toFixed(1)}px`);
+        dot.style.setProperty("--splash-y", `${randomBetween(-82, 82).toFixed(1)}px`);
         document.body.appendChild(dot);
         window.setTimeout(() => dot.remove(), 760);
       }
@@ -2154,6 +2632,21 @@
       els.percentResult.textContent = "";
       els.calculatePercentBtn.style.display = "none";
       els.percentResults.classList.remove("show");
+    }
+
+    function setPotatoLevel(level) {
+      state.potatoLevel = level;
+      document.body.classList.toggle("potato-low", level === "low");
+      document.body.classList.toggle("potato-high", level === "high");
+      els.potatoToggle.textContent = level === "high" ? "High" : level === "low" ? "Low" : "Off";
+      document.querySelectorAll("[data-potato-level]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.potatoLevel === level);
+      });
+      if (level !== "off") {
+        clearVangaSparkleTimers();
+      } else {
+        setupVangaSparkleTimers();
+      }
     }
 
     function renderPercentResults(matches) {
@@ -2197,7 +2690,7 @@
     }
 
     function pickRandomBrainrot() {
-      const topSecretStats = baseStats.filter((item) => item.secretLabel === "Top Secret");
+      const topSecretStats = baseStats.filter((item) => item.secretLabel === "Top Secret" || item.secretLabel === "Helper");
       const visibleStats = baseStats.filter((item) => !item.hiddenExact && !item.unavailable);
       const roll = Math.random();
       let pool = visibleStats;
@@ -2209,7 +2702,7 @@
       const picked = pool[Math.floor(Math.random() * pool.length)];
       state.selectedStat = picked;
       state.rank = Math.floor(randomBetween(0, 5));
-      state.level = Math.floor(randomBetween(1, 81));
+      state.level = Math.floor(randomBetween(1, 101));
       state.selectedMutations = new Set();
       for (const [name] of traits) {
         if (Math.random() < 0.35) state.selectedMutations.add(name);
@@ -2245,14 +2738,33 @@
 
     function updateTimers() {
       const targets = {
-        aaMorning: getNextWeeklyTarget(6, 16, 0),
-        aaEvening: getNextWeeklyTarget(0, 2, 0),
-        tacoTuesday: getNextWeeklyTarget(3, 4, 0)
+        aaMorning: getNextWeeklyTarget(6, 15, 0),
+        aaEvening: getNextWeeklyTarget(0, 1, 0),
+        tacoTuesday: getNextWeeklyTarget(3, 2, 0)
       };
       for (const [key, target] of Object.entries(targets)) {
         const node = document.querySelector(`[data-timer="${key}"]`);
         if (node) node.innerHTML = formatCountdown(target);
       }
+    }
+
+    function playNotifySound() {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      const ctx = new AudioContext();
+      const notes = [880, 1174, 1046, 880, 1174, 1046];
+      notes.forEach((frequency, index) => {
+        const oscillator = ctx.createOscillator();
+        const gain = ctx.createGain();
+        oscillator.type = "sine";
+        oscillator.frequency.value = frequency;
+        gain.gain.setValueAtTime(0.0001, ctx.currentTime + index * 0.18);
+        gain.gain.exponentialRampToValueAtTime(0.18, ctx.currentTime + index * 0.18 + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + index * 0.18 + 0.16);
+        oscillator.connect(gain).connect(ctx.destination);
+        oscillator.start(ctx.currentTime + index * 0.18);
+        oscillator.stop(ctx.currentTime + index * 0.18 + 0.17);
+      });
     }
 
     function renderSearchResults(matches) {
@@ -2290,10 +2802,12 @@
             option.addEventListener("click", () => {
               state.selectedStat = match;
               state.hasCalculated = false;
+              if (state.level < 1) state.level = 1;
               els.search.value = match.name;
               resetPercentBrainrot();
               els.results.classList.remove("show");
               calculate();
+              emitBrainrotSplash(els.searchWrap);
             });
           }
           block.appendChild(option);
@@ -2312,14 +2826,10 @@
 
     function updateSearchResults(query) {
       const normalized = query.trim().toLowerCase();
+      const secretExact = isSecretExactQuery(normalized);
       const matches = baseStats
-        .filter((item) =>
-          !normalized
-            ? !shouldHideFromOpenList(item)
-            : item.hiddenExact
-              ? normalized === item.name.toLowerCase()
-              : item.name.toLowerCase().includes(normalized)
-        )
+        .filter((item) => matchesBrainrotSearch(item, normalized))
+        .filter((item) => !secretExact || item.hiddenExact)
         .sort((a, b) => {
           const rarityDiff = getRarityMeta(a).order - getRarityMeta(b).order;
           if (rarityDiff !== 0) {
@@ -2338,6 +2848,9 @@
     }
 
     function calculate() {
+      if (!isTopSecretLike(state.selectedStat)) {
+        state.selectedMutations.delete("Ligma (Joke)");
+      }
       const mutationPercent = [...state.selectedMutations]
         .map((name) =>
           [...traits, ...mutations].find(([bonusName]) => bonusName === name)?.[1] || 0
@@ -2350,9 +2863,14 @@
 
       els.mutationTotal.textContent = `${mutationPercent}%`;
       els.levelValue.value = String(state.level);
+      els.levelMaxLabel.classList.toggle("show", state.selectedStat && state.level >= 100);
       const t = getCurrentT();
 
       if (!state.selectedStat) {
+        state.level = 0;
+        state.rank = 0;
+        els.levelValue.value = "0";
+        els.levelMaxLabel.classList.remove("show");
         els.baseStat.textContent = "—";
         els.finalStat.textContent = "—";
         els.finalUnit.textContent = "$ / Fish";
@@ -2413,41 +2931,72 @@
     }
 
     document.getElementById("levelDown").addEventListener("click", () => {
+      if (!state.selectedStat) {
+        rejectControl(els.levelDown);
+        return;
+      }
       state.level = Math.max(1, state.level - 1);
       invalidateCalculatedResult();
       calculate();
     });
 
     document.getElementById("levelUp").addEventListener("click", () => {
-      state.level += 1;
+      if (!state.selectedStat) {
+        rejectControl(els.levelUp);
+        return;
+      }
+      if (state.level >= 100) {
+        state.level = 100;
+        rejectControl(els.levelUp);
+        calculate();
+        return;
+      }
+      state.level = Math.min(100, state.level + 1);
       invalidateCalculatedResult();
       calculate();
+      if (state.level >= 100) {
+        rejectControl(els.levelUp);
+      }
     });
 
     els.levelValue.addEventListener("input", (event) => {
+      if (!state.selectedStat) {
+        event.target.value = "0";
+        rejectControl(els.levelValue);
+        return;
+      }
       const rawValue = event.target.value.replace(/[^\d]/g, "");
       if (!rawValue) {
         event.target.value = "";
         return;
       }
 
-      state.level = Math.max(1, Number(rawValue));
+      state.level = Math.min(100, Math.max(1, Number(rawValue)));
       invalidateCalculatedResult();
       calculate();
     });
 
+    els.levelValue.addEventListener("click", () => {
+      if (!state.selectedStat) {
+        rejectControl(els.levelValue);
+      }
+    });
+
     els.levelValue.addEventListener("blur", (event) => {
       if (!event.target.value.trim()) {
-        state.level = 1;
+        state.level = state.selectedStat ? 1 : 0;
         invalidateCalculatedResult();
         calculate();
       }
     });
 
     els.search.addEventListener("input", (event) => {
-      if (!event.target.value.trim()) {
+      const typedValue = event.target.value.trim();
+      if (!typedValue || (state.selectedStat && typedValue !== state.selectedStat.name)) {
         state.selectedStat = null;
         state.hasCalculated = false;
+        state.rank = 0;
+        state.level = 0;
         state.selectedMutations.clear();
         resetPercentBrainrot();
         calculate();
@@ -2470,6 +3019,8 @@
       els.search.value = "";
       state.selectedStat = null;
       state.hasCalculated = false;
+      state.rank = 0;
+      state.level = 0;
       state.selectedMutations.clear();
       resetPercentBrainrot();
       els.searchWrap.classList.remove("open");
@@ -2479,6 +3030,7 @@
 
     els.calculateBtn.addEventListener("click", () => {
       if (!state.selectedStat) {
+        rejectControl(els.calculateBtn);
         return;
       }
       state.hasCalculated = true;
@@ -2507,6 +3059,25 @@
       applyTranslations();
     });
 
+    els.potatoToggle.addEventListener("click", () => {
+      els.potatoControl.classList.toggle("open");
+    });
+
+    els.potatoMenu.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-potato-level]");
+      if (!button) return;
+      setPotatoLevel(button.dataset.potatoLevel);
+      els.potatoControl.classList.remove("open");
+    });
+
+    document.querySelectorAll("[data-notify]").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.notifiedTimers.add(button.dataset.notify);
+        button.textContent = "On";
+        playNotifySound();
+      });
+    });
+
     document.addEventListener("click", (event) => {
       if (!event.target.closest(".search-wrap")) {
         els.results.classList.remove("show");
@@ -2515,6 +3086,9 @@
       if (!event.target.closest(".percent-search-wrap")) {
         els.percentResults.classList.remove("show");
       }
+      if (!event.target.closest("#potatoControl")) {
+        els.potatoControl.classList.remove("open");
+      }
     });
 
     renderRanks();
@@ -2522,6 +3096,7 @@
     renderBonusGrid(els.mutationsGrid, mutations, "mutation");
     applySearchSize("medium");
     applyTranslations();
+    setPotatoLevel("off");
     window.setInterval(updateTimers, 1000);
     calculate();
   </script>
