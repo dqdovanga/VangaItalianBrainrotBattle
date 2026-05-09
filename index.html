@@ -931,6 +931,17 @@
       border: 1px solid var(--line-strong);
     }
 
+    .action-btn.secondary-action.percent-admin {
+      background: linear-gradient(180deg, #ff5b5b, #070707);
+      color: #f8fbff;
+    }
+
+    .action-btn.secondary-action.percent-exclusive {
+      background: linear-gradient(120deg, #ff7b7b, #ffba66, #fff06e, #82ef9f, #7fd7ff, #a88dff, #ff8ddb);
+      background-size: 220% 220%;
+      color: #17130c;
+    }
+
     .percent-section {
       display: none;
       margin-top: 12px;
@@ -944,6 +955,52 @@
       min-height: 26px;
       margin-top: 10px;
       font-size: 20px;
+      font-weight: 800;
+    }
+
+    .percent-result.percent-admin {
+      color: #ff6f6f;
+    }
+
+    .percent-result.percent-exclusive {
+      background-image: linear-gradient(120deg, #ff7b7b, #ffba66, #fff06e, #82ef9f, #7fd7ff, #a88dff, #ff8ddb);
+      background-size: 220% 220%;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: brainrotWave 4.8s linear infinite;
+    }
+
+    .percent-choice .brainrot-exclusive-static,
+    .percent-choice .brainrot-admin {
+      animation: brainrotWave 4.8s linear infinite;
+    }
+
+    .percent-random-btn {
+      width: 100%;
+      height: 38px;
+      margin-top: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.82);
+      border-radius: 14px;
+      background: #ffffff;
+      color: #12203a;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .percent-search-wrap.percent-admin .search-input {
+      color: #ff6f6f;
+      font-weight: 800;
+    }
+
+    .percent-search-wrap.percent-exclusive .search-input {
+      background-image: linear-gradient(120deg, #ff7b7b, #ffba66, #fff06e, #82ef9f, #7fd7ff, #a88dff, #ff8ddb);
+      background-size: 220% 220%;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: brainrotWave 4.8s linear infinite;
       font-weight: 800;
     }
 
@@ -1448,6 +1505,18 @@
       color: var(--text) !important;
     }
 
+    body.potato-high .percent-result {
+      color: var(--text) !important;
+      background-image: none !important;
+      -webkit-text-fill-color: currentColor !important;
+    }
+
+    body.potato-high .percent-search-wrap .search-input {
+      color: var(--text) !important;
+      background-image: none !important;
+      -webkit-text-fill-color: currentColor !important;
+    }
+
     body.potato-high .clear-search {
       color: var(--muted) !important;
       text-shadow: none !important;
@@ -1480,7 +1549,12 @@
     body.potato-low .brainrot-wave-ocean,
     body.potato-low .brainrot-rainbow,
     body.potato-low .brainrot-top-secret,
-    body.potato-low .brainrot-admin-main {
+    body.potato-low .brainrot-admin-main,
+    body.potato-low .percent-result.percent-exclusive,
+    body.potato-low .action-btn.secondary-action.percent-exclusive,
+    body.potato-low .percent-search-wrap.percent-exclusive .search-input,
+    body.potato-low .percent-choice .brainrot-exclusive-static,
+    body.potato-low .percent-choice .brainrot-admin {
       animation: none !important;
     }
 
@@ -1643,7 +1717,7 @@
     </div>
 
     <aside class="panel">
-      <button class="action-btn" id="calculateBtn" data-i18n="calculateStat">Calculate Stat</button>
+      <button class="action-btn" id="calculateBtn" data-i18n="calculateStat">Calculate Brainrot</button>
       <div class="card result-card">
         <div class="subtle" data-i18n="finalStat">Final Stat</div>
         <div class="stat-main stat-accent" id="finalStat">—</div>
@@ -1656,6 +1730,7 @@
             <input id="percentSearch" class="search-input" type="text" placeholder="Search percent brainrot..." autocomplete="off">
             <div class="search-results size-medium" id="percentResults"></div>
           </div>
+          <button class="percent-random-btn" id="percentRandomBtn" type="button" data-i18n="random">Random</button>
           <div class="percent-choice" id="percentChoice"></div>
           <button class="action-btn secondary-action" id="calculatePercentBtn" data-i18n="calculatePercent" style="display:none;">Calculate % Brainrot</button>
           <div class="percent-result stat-accent" id="percentResult"></div>
@@ -2134,6 +2209,7 @@
       qualityLabel: document.getElementById("qualityLabel"),
       percentSection: document.getElementById("percentSection"),
       percentSearch: document.getElementById("percentSearch"),
+      percentRandomBtn: document.getElementById("percentRandomBtn"),
       percentResults: document.getElementById("percentResults"),
       percentChoice: document.getElementById("percentChoice"),
       calculatePercentBtn: document.getElementById("calculatePercentBtn"),
@@ -2149,7 +2225,7 @@
         small: "Small", medium: "Medium", large: "Large", baseStat: "Base Stat", mutationTotal: "Mutation Total", stacked: "stacked",
         rank: "Rank", rankHint: "+15% per rank", level: "Level", levelHint: "+50% per level after 1", bonuses: "Bonuses",
         bonusHint: "Tap to toggle. Percentages stack (sum to multiplier).", traits: "Traits", mutations: "Mutations",
-        calculateStat: "Calculate Stat", finalStat: "Final Stat", rankMultiplier: "Rank multiplier", levelMultiplier: "Level multiplier",
+        calculateStat: "Calculate Brainrot", finalStat: "Final Stat", rankMultiplier: "Rank multiplier", levelMultiplier: "Level multiplier",
         mutationMultiplier: "Mutation multiplier", formula: "Base × all multipliers", percentBrainrot: "Percent Brainrot",
         calculatePercent: "Calculate % Brainrot", searchPercent: "Search percent brainrot...", noMatches: "No matching stats found.",
         unavailable: "Unavailable", days: "d", hours: "h", minutes: "m", seconds: "s", aaMorning: "1st AA", aaEvening: "2nd AA",
@@ -2704,7 +2780,49 @@
       els.percentChoice.textContent = "";
       els.percentResult.textContent = "";
       els.calculatePercentBtn.style.display = "none";
+      clearPercentAccent();
       els.percentResults.classList.remove("show");
+    }
+
+    function getPercentColorClass(item) {
+      return item?.type === "Admin" ? "brainrot-admin" : "brainrot-exclusive-static";
+    }
+
+    function getPercentAccentClass(item) {
+      return item?.type === "Admin" ? "percent-admin" : "percent-exclusive";
+    }
+
+    function clearPercentAccent() {
+      els.calculatePercentBtn.classList.remove("percent-admin", "percent-exclusive");
+      els.percentResult.classList.remove("percent-admin", "percent-exclusive");
+      els.percentSearch.parentElement.classList.remove("percent-admin", "percent-exclusive");
+    }
+
+    function applyPercentAccent(item) {
+      clearPercentAccent();
+      if (!item) return;
+      const accentClass = getPercentAccentClass(item);
+      els.calculatePercentBtn.classList.add(accentClass);
+      els.percentResult.classList.add(accentClass);
+      els.percentSearch.parentElement.classList.add(accentClass);
+    }
+
+    function selectPercentBrainrot(item) {
+      const colorClass = getPercentColorClass(item);
+      state.selectedPercentBrainrot = item;
+      els.percentSearch.value = item.name;
+      els.percentResults.classList.remove("show");
+      els.percentChoice.innerHTML = `<span class="${colorClass}">${item.name}</span> ${item.percent}%`;
+      els.calculatePercentBtn.style.display = "block";
+      els.percentResult.textContent = "";
+      applyPercentAccent(item);
+    }
+
+    function pickRandomPercentBrainrot() {
+      const item = percentBrainrots[Math.floor(Math.random() * percentBrainrots.length)];
+      if (!item) return;
+      selectPercentBrainrot(item);
+      emitBrainrotSplash(els.percentRandomBtn);
     }
 
     function setPotatoLevel(level) {
@@ -2730,16 +2848,11 @@
       } else {
         for (const item of matches) {
           const option = document.createElement("div");
-          const colorClass = item.type === "Admin" ? "brainrot-admin" : "brainrot-exclusive-static";
+          const colorClass = getPercentColorClass(item);
           option.className = "search-option";
           option.innerHTML = `<span class="brainrot-name ${colorClass}">${item.name}</span><span class="subtle">${item.type} ${item.percent}%</span>`;
           option.addEventListener("click", () => {
-            state.selectedPercentBrainrot = item;
-            els.percentSearch.value = item.name;
-            els.percentResults.classList.remove("show");
-            els.percentChoice.innerHTML = `<span class="${colorClass}">${item.name}</span> ${item.percent}%`;
-            els.calculatePercentBtn.style.display = "block";
-            els.percentResult.textContent = "";
+            selectPercentBrainrot(item);
           });
           els.percentResults.appendChild(option);
         }
@@ -2759,6 +2872,7 @@
       if (!state.selectedPercentBrainrot || state.finalValue == null) return;
       const value = state.finalValue * (state.selectedPercentBrainrot.percent / 100);
       els.percentResult.textContent = `$${formatMoney(value)} ${state.selectedStat.unit.replace("$ /", "/")}`;
+      applyPercentAccent(state.selectedPercentBrainrot);
       emitBrainrotSplash(els.calculatePercentBtn);
     }
 
@@ -3118,12 +3232,15 @@
       els.percentChoice.textContent = "";
       els.percentResult.textContent = "";
       els.calculatePercentBtn.style.display = "none";
+      clearPercentAccent();
       updatePercentResults(event.target.value);
     });
 
     els.percentSearch.addEventListener("focus", () => {
       updatePercentResults(els.percentSearch.value);
     });
+
+    els.percentRandomBtn.addEventListener("click", pickRandomPercentBrainrot);
 
     els.calculatePercentBtn.addEventListener("click", calculatePercentBrainrot);
 
