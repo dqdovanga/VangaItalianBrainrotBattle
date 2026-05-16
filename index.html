@@ -27,6 +27,7 @@
     body {
       margin: 0;
       min-height: 100vh;
+      min-width: 1980px;
       font-family: "Segoe UI", Inter, sans-serif;
       color: var(--text);
       background:
@@ -35,27 +36,68 @@
         linear-gradient(180deg, #0b1322 0%, #10192c 100%);
       padding: 16px;
       overflow-x: auto;
+      --mouse-x: 50vw;
+      --mouse-y: 50vh;
     }
 
     body::before {
-      content: "";
+      content: "><>        <><        ><>";
       position: fixed;
       inset: -12vh -12vw;
       pointer-events: none;
       z-index: -1;
-      background:
-        radial-gradient(circle at 14% 22%, var(--bubble-color-1, rgba(255,255,255,0.18)) 0 9vw, transparent 9.4vw),
-        radial-gradient(circle at 78% 16%, var(--bubble-color-2, rgba(255,255,255,0.13)) 0 12vw, transparent 12.4vw),
-        radial-gradient(circle at 28% 88%, var(--bubble-color-3, rgba(255,255,255,0.11)) 0 15vw, transparent 15.4vw),
-        radial-gradient(circle at 92% 82%, var(--bubble-color-4, rgba(255,255,255,0.10)) 0 10vw, transparent 10.4vw);
-      filter: blur(2px);
-      opacity: 0.95;
-      animation: bubbleFloat 5.5s ease-in-out infinite alternate;
+      color: var(--bubble-color-1, rgba(255,255,255,0.18));
+      font-size: 17vw;
+      font-weight: 900;
+      letter-spacing: 12vw;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      opacity: 0.26;
+      text-shadow:
+        28vw 8vh 0 var(--bubble-color-2, rgba(255,255,255,0.13)),
+        62vw 44vh 0 var(--bubble-color-3, rgba(255,255,255,0.11)),
+        12vw 78vh 0 var(--bubble-color-4, rgba(255,255,255,0.10));
+      animation: fishFloat 13s ease-in-out infinite alternate;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(127, 215, 255, 0.16), transparent 18vw);
+      opacity: 0.8;
+      transition: opacity 180ms ease;
     }
 
     body.potato-high::before,
-    body.potato-low::before {
+    body.potato-low::before,
+    body.potato-high::after,
+    body.potato-low::after {
       display: none;
+    }
+
+    body.theme-light {
+      --bg: #f7f9ff;
+      --panel: #ffffff;
+      --panel-soft: #eef3fb;
+      --line: rgba(16, 28, 48, 0.16);
+      --line-strong: rgba(16, 28, 48, 0.28);
+      --text: #0d1524;
+      --muted: #53647e;
+      --pill: #edf2fb;
+      background:
+        radial-gradient(circle at top left, rgba(79, 146, 255, 0.13), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(99, 197, 255, 0.12), transparent 24%),
+        linear-gradient(180deg, #f9fbff 0%, #edf3fb 100%);
+    }
+
+    body.theme-light .panel,
+    body.theme-light .card,
+    body.theme-light .settings-panel {
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 18px 50px rgba(42, 68, 112, 0.14);
     }
 
     .app {
@@ -67,11 +109,7 @@
       align-items: start;
     }
 
-    @media (min-width: 1081px) {
-      body {
-        min-width: 1980px;
-      }
-
+    @media (min-width: 1px) {
       .app,
       .timer-board,
       .page-signature {
@@ -199,11 +237,113 @@
       border: 0;
       border-radius: 14px;
       padding: 0 16px;
-      background: linear-gradient(180deg, var(--blue), var(--blue-strong));
+      background: #f8fbff;
+      color: #10192c;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .history-btn {
+      width: 100%;
+      min-height: 38px;
+      border: 0;
+      border-radius: 14px;
+      padding: 8px 12px;
+      background: #f8fbff;
+      color: #10192c;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .random-row {
+      display: grid;
+      grid-template-columns: 1fr 38px;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .chance-btn {
+      width: 38px;
+      height: 38px;
+      border: 0;
+      border-radius: 14px;
+      background: #f8fbff;
+      color: #10192c;
+      font: inherit;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .chance-list,
+    .history-list {
+      padding: 8px;
+    }
+
+    .chance-list .search-option,
+    .history-list .search-option {
+      justify-content: space-between;
+    }
+
+    .settings-shell {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      z-index: 30;
+    }
+
+    .settings-trigger {
+      width: 42px;
+      height: 42px;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 30px;
+      line-height: 1;
+      cursor: pointer;
+      animation: settingsSpin 8s linear infinite;
+      text-shadow: 0 0 12px rgba(127, 215, 255, 0.34);
+    }
+
+    .settings-panel {
+      display: none;
+      position: absolute;
+      top: 52px;
+      right: 0;
+      width: 330px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(24, 35, 56, 0.98);
+      box-shadow: var(--shadow);
+    }
+
+    .settings-shell.open .settings-panel {
+      display: block;
+    }
+
+    .theme-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .theme-option {
+      height: 36px;
+      border: 1px solid var(--line-strong);
+      border-radius: 12px;
+      background: rgba(12, 19, 31, 0.8);
       color: var(--text);
       font: inherit;
       font-weight: 700;
       cursor: pointer;
+    }
+
+    .theme-option.active {
+      background: #f8fbff;
+      color: #10192c;
     }
 
     .potato-control {
@@ -531,9 +671,9 @@
     .level-max-label {
       position: absolute;
       right: 52px;
-      top: 50%;
-      transform: translateY(-50%);
+      top: -19px;
       color: #ff8d8d;
+      font-size: 11px;
       font-weight: 900;
       opacity: 0;
       pointer-events: none;
@@ -552,6 +692,12 @@
       margin-top: 10px;
       transition: background 180ms ease, box-shadow 180ms ease, color 180ms ease, transform 120ms ease;
       transform: scale(1);
+    }
+
+    .action-btn.no-selection {
+      background: #f8fbff !important;
+      color: #10192c !important;
+      animation: none !important;
     }
 
     aside.panel > .action-btn {
@@ -743,8 +889,8 @@
     }
 
     .accent-top-secret {
-      color: #8d38d8;
-      text-shadow: var(--top-secret-sparkles, 0 0 10px rgba(141, 56, 216, 0.42));
+      color: #b56bff;
+      text-shadow: var(--top-secret-sparkles, 0 0 10px rgba(93, 28, 150, 0.64));
     }
 
     .accent-admin-main,
@@ -771,6 +917,25 @@
 
     .accent-slimy {
       background-image: linear-gradient(90deg, #153a8b 0%, #245cd6 48%, #8fe4ff 100%);
+    }
+
+    .accent-gambler {
+      background-image: linear-gradient(90deg, #ffe66f 0%, #ffb02e 45%, #ffe66f 100%);
+      background-size: 220% 220%;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: brainrotWave 4.8s linear infinite;
+    }
+
+    .accent-discord-mod {
+      color: #5865f2;
+      text-shadow: 0 0 10px rgba(88, 101, 242, 0.45);
+    }
+
+    .accent-supporter {
+      color: #f47fff;
+      text-shadow: 0 0 10px rgba(244, 127, 255, 0.45);
     }
 
     .accent-light-yellow {
@@ -869,6 +1034,21 @@
       background: linear-gradient(180deg, #245cd6, #153a8b);
     }
 
+    .action-btn.accent-gambler {
+      background: linear-gradient(90deg, #ffe66f, #ffb02e, #ffe66f);
+      background-size: 220% 220%;
+      color: #231807;
+      animation: brainrotWave 4.8s linear infinite;
+    }
+
+    .action-btn.accent-discord-mod {
+      background: linear-gradient(180deg, #5865f2, #343fbd);
+    }
+
+    .action-btn.accent-supporter {
+      background: linear-gradient(180deg, #f47fff, #c45ad1);
+    }
+
     .action-btn.accent-light-yellow {
       background: linear-gradient(180deg, #ffe881, #e8b93e);
       color: #1d1a0d;
@@ -934,12 +1114,15 @@
     .action-btn.secondary-action.percent-admin {
       background: linear-gradient(180deg, #ff5b5b, #070707);
       color: #f8fbff;
+      background-size: 220% 220%;
+      animation: brainrotWaveUp 4.8s linear infinite;
     }
 
     .action-btn.secondary-action.percent-exclusive {
       background: linear-gradient(120deg, #ff7b7b, #ffba66, #fff06e, #82ef9f, #7fd7ff, #a88dff, #ff8ddb);
       background-size: 220% 220%;
       color: #17130c;
+      animation: brainrotWave 4.8s linear infinite;
     }
 
     .percent-section {
@@ -960,6 +1143,7 @@
 
     .percent-result.percent-admin {
       color: #ff6f6f;
+      animation: brainrotWaveUp 4.8s linear infinite;
     }
 
     .percent-result.percent-exclusive {
@@ -1089,7 +1273,7 @@
       display: none;
       z-index: 5;
       overflow-y: auto;
-      max-height: 640px;
+      max-height: calc(100vh - 74px);
       scrollbar-width: thin;
       scrollbar-color: rgba(127, 170, 245, 0.55) rgba(18, 31, 52, 0.65);
     }
@@ -1103,11 +1287,11 @@
     }
 
     .search-results.size-medium {
-      max-height: 640px;
+      max-height: 600px;
     }
 
     .search-results.size-large {
-      max-height: 780px;
+      max-height: calc(100vh - 48px);
     }
 
     .percent-search-wrap .search-results {
@@ -1250,8 +1434,8 @@
     }
 
     .brainrot-top-secret {
-      color: #9b4de0;
-      text-shadow: var(--top-secret-sparkles, 0 0 10px rgba(141, 56, 216, 0.30));
+      color: #b56bff;
+      text-shadow: var(--top-secret-sparkles, 0 0 10px rgba(93, 28, 150, 0.64));
     }
 
     .brainrot-light-yellow {
@@ -1339,8 +1523,33 @@
     }
 
     .brainrot-slimy {
-      color: #56a7ff;
-      text-shadow: 0 0 10px rgba(143, 228, 255, 0.34);
+      background-image: linear-gradient(90deg, #245cd6 0%, #245cd6 45%, #8fe4ff 100%);
+      background-size: 220% 220%;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: none;
+    }
+
+    .brainrot-gambler {
+      background-image: linear-gradient(90deg, #ffe66f 0%, #ffb02e 45%, #ffe66f 100%);
+      background-size: 220% 220%;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: brainrotWave 4.8s linear infinite;
+    }
+
+    .brainrot-discord-mod {
+      color: #5865f2;
+      text-shadow: 0 0 10px rgba(88, 101, 242, 0.45);
+    }
+
+    .brainrot-supporter {
+      color: #f47fff;
+      text-shadow: 0 0 10px rgba(244, 127, 255, 0.45);
     }
 
     .verified-badge {
@@ -1372,6 +1581,37 @@
       transform: rotate(-45deg);
       top: 4px;
       left: 3px;
+    }
+
+    .discord-badge,
+    .supporter-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      margin-left: 5px;
+      border-radius: 5px;
+      background: #5865f2;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 900;
+      box-shadow: 0 0 10px rgba(88, 101, 242, 0.52);
+    }
+
+    .supporter-badge {
+      border-radius: 4px;
+      background: #f47fff;
+      transform: rotate(45deg);
+      font-size: 0;
+    }
+
+    .supporter-badge::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 2px;
+      background: #fff;
     }
 
     .vanga-sparkle.verified-sparkle::before {
@@ -1451,13 +1691,19 @@
       }
     }
 
-    @keyframes bubbleFloat {
+    @keyframes fishFloat {
       0% {
-        transform: translate3d(-4vw, -4vh, 0) scale(0.96);
+        transform: translate3d(-4vw, -4vh, 0) rotate(-4deg) scale(0.96);
       }
 
       100% {
-        transform: translate3d(4vw, 4vh, 0) scale(1.08);
+        transform: translate3d(4vw, 4vh, 0) rotate(5deg) scale(1.08);
+      }
+    }
+
+    @keyframes settingsSpin {
+      to {
+        transform: rotate(360deg);
       }
     }
 
@@ -1492,7 +1738,8 @@
     body.potato-high .brainrot-exclusive-static,
     body.potato-high .search-rarity-label,
     body.potato-high .mutation-bonus,
-    body.potato-high .quality-label {
+    body.potato-high .quality-label,
+    body.potato-high .percent-choice {
       color: var(--text) !important;
       background-image: none !important;
       text-shadow: none !important;
@@ -1550,6 +1797,8 @@
     body.potato-low .brainrot-rainbow,
     body.potato-low .brainrot-top-secret,
     body.potato-low .brainrot-admin-main,
+    body.potato-low .brainrot-gambler,
+    body.potato-low .brainrot-slimy,
     body.potato-low .percent-result.percent-exclusive,
     body.potato-low .action-btn.secondary-action.percent-exclusive,
     body.potato-low .percent-search-wrap.percent-exclusive .search-input,
@@ -1573,21 +1822,107 @@
 
     @media (max-width: 1080px) {
       .app {
-        grid-template-columns: 1fr;
+        grid-template-columns: 360px 1fr 360px;
       }
 
       .timer-board {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
       .search-results,
       .percent-search-wrap .search-results {
-        top: calc(100% + 6px);
-        left: 0;
-        right: 0;
-        width: auto;
-        max-height: 360px;
+        top: 0;
+        width: 360px;
+        max-height: calc(100vh - 48px);
       }
+
+      .search-results {
+        left: auto;
+        right: calc(100% + 12px);
+      }
+
+      .percent-search-wrap .search-results {
+        left: calc(100% + 12px);
+        right: auto;
+      }
+    }
+
+    .discord-community,
+    .last-update-note {
+      width: min(1220px, 100%);
+      margin: 14px auto 0;
+      text-align: center;
+    }
+
+    .discord-community {
+      color: rgba(242, 246, 255, 0.58);
+      font-size: 13px;
+    }
+
+    .discord-icon-link {
+      display: inline-flex;
+      width: 28px;
+      height: 28px;
+      margin: 0 6px;
+      border-radius: 9px;
+      align-items: center;
+      justify-content: center;
+      background: #5865f2;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 900;
+      vertical-align: middle;
+      box-shadow: 0 0 16px rgba(88, 101, 242, 0.36);
+    }
+
+    .discord-community .subtle-line {
+      margin-top: 5px;
+      font-size: 11px;
+      opacity: 0.72;
+    }
+
+    .last-update-note {
+      color: #ff5b5b;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .streak-pill {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      z-index: 30;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      background: rgba(24, 35, 56, 0.88);
+      color: var(--text);
+      padding: 8px 12px;
+      font-weight: 900;
+      box-shadow: var(--shadow);
+    }
+
+    .fire {
+      display: inline-block;
+      animation: fireFlicker 680ms ease-in-out infinite alternate;
+      color: #ff7b2f;
+      text-shadow: 0 0 10px rgba(255, 123, 47, 0.72);
+    }
+
+    .fire.blue { color: #4aa3ff; text-shadow: 0 0 10px rgba(74, 163, 255, 0.72); }
+    .fire.yellow { color: #ffe66f; text-shadow: 0 0 10px rgba(255, 230, 111, 0.72); }
+    .fire.purple { color: #b56bff; text-shadow: 0 0 10px rgba(181, 107, 255, 0.72); }
+
+    body.potato-high .streak-pill,
+    body.potato-low .fire {
+      animation: none !important;
+    }
+
+    @keyframes fireFlicker {
+      0% { transform: translateY(1px) scale(0.94); }
+      100% { transform: translateY(-1px) scale(1.08); }
     }
 
     .page-signature {
@@ -1602,6 +1937,51 @@
   </style>
 </head>
 <body>
+  <div class="streak-pill" id="streakPill"><span class="fire" id="streakFire">▲</span><span id="streakCount">0</span></div>
+  <div class="settings-shell" id="settingsShell">
+    <button class="settings-trigger" id="settingsTrigger" type="button" aria-label="Settings">⚙</button>
+    <div class="settings-panel">
+      <div class="field">
+        <label class="label" for="languageSelect" data-i18n="language">Language</label>
+        <select class="language-select" id="languageSelect">
+          <option value="ms">Bahasa Melayu</option>
+          <option value="fil">Filipino</option>
+          <option value="en" selected>England [MAIN]</option>
+          <option value="bg">Български</option>
+          <option value="de">Deutsch</option>
+          <option value="ro">Română</option>
+          <option value="ru">Русский</option>
+          <option value="zh">中文</option>
+          <option value="ja">日本語</option>
+          <option value="es">Español</option>
+          <option value="it">Italiano</option>
+          <option value="pt">Português</option>
+          <option value="tr">Türkçe</option>
+          <option value="el">Ελληνικά</option>
+          <option value="lt">Lietuvių</option>
+        </select>
+      </div>
+      <div class="field">
+        <div class="potato-control" id="potatoControl">
+          <label class="label" data-i18n="potatoLevel">Potato Level</label>
+          <button class="potato-toggle" id="potatoToggle" type="button">Off</button>
+          <div class="potato-help" data-i18n="potatoHelp">Makes it less laggier for bad devices</div>
+          <div class="potato-menu" id="potatoMenu">
+            <button type="button" data-potato-level="off">Off</button>
+            <button type="button" data-potato-level="low">Low</button>
+            <button type="button" data-potato-level="high">High</button>
+          </div>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label class="label" data-i18n="theme">Theme</label>
+        <div class="theme-row">
+          <button class="theme-option" type="button" data-theme="light" data-i18n="lightTheme">Light</button>
+          <button class="theme-option active" type="button" data-theme="dark" data-i18n="darkTheme">Dark</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <main class="app">
     <section class="panel">
       <div class="section-head">
@@ -1625,7 +2005,11 @@
           <button class="clear-search" id="clearSearch" aria-label="Clear search">×</button>
           <div class="search-results" id="searchResults"></div>
         </div>
-        <button class="random-btn" id="randomBtn" data-i18n="random" style="width:100%; margin-top:10px;">Random</button>
+        <button class="history-btn" id="historyBtn" type="button" data-i18n="history">Brainrot Calculate History</button>
+        <div class="random-row">
+          <button class="random-btn" id="randomBtn" data-i18n="random" style="width:100%;">Random</button>
+          <button class="chance-btn" id="chanceBtn" type="button" aria-label="Random chances">?</button>
+        </div>
       </div>
 
       <div class="card">
@@ -1680,7 +2064,7 @@
       </div>
     </section>
 
-    <section class="panel">
+    <section class="panel old-settings-panel" style="display:none;">
       <div class="top-controls" style="margin-bottom:0;">
         <div>
           <label class="label" for="languageSelect" data-i18n="language">Language</label>
@@ -1768,23 +2152,28 @@
       <div class="timer-value" data-timer="aaMorning"></div>
       <button class="timer-notify" type="button" data-notify="aaMorning" data-i18n="notify">Notify</button>
       <div class="timer-desc" data-i18n="notifyDesc">Notifies you when the timer ends</div>
-      <div class="timer-test">[TEST]</div>
+      <div class="timer-test" data-i18n="testLabel">[TEST]</div>
     </div>
     <div class="timer-card">
       <div class="timer-title" data-i18n="aaEvening">2nd AA</div>
       <div class="timer-value" data-timer="aaEvening"></div>
       <button class="timer-notify" type="button" data-notify="aaEvening" data-i18n="notify">Notify</button>
       <div class="timer-desc" data-i18n="notifyDesc">Notifies you when the timer ends</div>
-      <div class="timer-test">[TEST]</div>
+      <div class="timer-test" data-i18n="testLabel">[TEST]</div>
     </div>
     <div class="timer-card">
       <div class="timer-title" data-i18n="tacoTuesday">Taco Tuesday (SCRAPPED)</div>
       <div class="timer-value" data-timer="tacoTuesday"></div>
       <button class="timer-notify" type="button" data-notify="tacoTuesday" data-i18n="notify">Notify</button>
       <div class="timer-desc" data-i18n="notifyDesc">Notifies you when the timer ends</div>
-      <div class="timer-test">[TEST]</div>
+      <div class="timer-test" data-i18n="testLabel">[TEST]</div>
     </div>
   </section>
+  <div class="discord-community">
+    <div>Join our Discord Community! <a class="discord-icon-link" href="https://discord.gg/rZzHPFHT" target="_blank" rel="noopener">D</a></div>
+    <div class="subtle-line">Click the App Icon to get access</div>
+  </div>
+  <div class="last-update-note">This is the last update to the calculator, thank you MFB for the great time!</div>
   <div class="page-signature">W Vanga</div>
 
   <script>
@@ -1888,7 +2277,7 @@
       { name: "Strawberrita", value: 9000000000, unit: "$ / Fish" },
       { name: "Cheesebrgr", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
       { name: "Chanchan", value: 1000000000000000, unit: "$ / Fish", secretLabel: "G.O.A.T", hiddenExact: true },
-      { name: "Willi", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Willi", value: 100000000000000, unit: "$ / Fish", secretLabel: "Discord Mod", hiddenExact: true },
       { name: "Ace", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
       { name: "Harsh7", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
       { name: "Resh", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
@@ -1897,7 +2286,7 @@
       { name: "Shapin", value: 150000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
       { name: "Joel", value: 250000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
       { name: "Sbaynation", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
-      { name: "Pasya", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Pasya", value: 1000000000000000, unit: "$ / Fish", secretLabel: "G.O.A.T", hiddenExact: true },
       { name: "Patryk", value: 250000000000000, unit: "$ / Fish", secretLabel: "Top Secret", hiddenExact: true },
       { name: "IP283", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
       { name: "Kamil", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
@@ -1906,11 +2295,16 @@
       { name: "G4NZ", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
       { name: "NoahBlox", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
       { name: "Ethan", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Olexiano", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
+      { name: "Iris", value: 100000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
       { name: "Ekko", value: 125000000000000, unit: "$ / Fish", secretLabel: "Helper", hiddenExact: true },
       { name: "Willozzy", value: 500000000000000, unit: "$ / Fish", secretLabel: "Dev", hiddenExact: true },
       { name: "Pyx", value: 500000000000000, unit: "$ / Fish", secretLabel: "Dev", hiddenExact: true },
       { name: "Pug", value: 500000000000000, unit: "$ / Fish", secretLabel: "Dev", hiddenExact: true },
       { name: "Slimy", value: 670000000000000, unit: "$ / Fish", secretLabel: "Dev", hiddenExact: true },
+      { name: "Hason", value: 100000000000000, unit: "$ / Fish", secretLabel: "Supporter", hiddenExact: true },
+      { name: "DiamondSparkle", value: 100000000000000, unit: "$ / Fish", secretLabel: "Supporter", hiddenExact: true },
+      { name: "Gambler", value: 75000000000000, unit: "$ / Fish", secretLabel: "Gambler", hiddenExact: true },
       { name: "God Triple T", value: 1000000000000000, unit: "$ / Fish", secretLabel: "G.O.A.T", hiddenExact: true },
       { name: "Vanga", value: 1000000000000000, unit: "$ / Fish", secretLabel: "G.O.A.T", hiddenExact: true }
     ];
@@ -1950,6 +2344,9 @@
       "brainrot-vanga": ["#eefcff", "#baf0ff", "#7fd7ff", "#96f7ff"],
       "brainrot-dev": ["#5b8dff", "#245cd6", "#153a8b", "#1d9bf0"],
       "brainrot-slimy": ["#245cd6", "#153a8b", "#8fe4ff", "#96f7ff"],
+      "brainrot-discord-mod": ["#5865f2", "#343fbd", "#7d86ff", "#5865f2"],
+      "brainrot-supporter": ["#f47fff", "#c45ad1", "#ffb2ff", "#f47fff"],
+      "brainrot-gambler": ["#ffe66f", "#ffb02e", "#ffcf4d", "#ffe66f"],
       "brainrot-rainbow": ["#ff7b7b", "#ffba66", "#7fd7ff", "#a88dff"],
       "brainrot-top-secret": ["#8d38d8", "#4d167e", "#050505", "#8d38d8"]
     };
@@ -2054,7 +2451,7 @@
       "Strawberrita": "brainrot-rainbow",
       "Cheesebrgr": "brainrot-top-secret",
       "Chanchan": "brainrot-vanga",
-      "Willi": "brainrot-top-secret",
+      "Willi": "brainrot-discord-mod",
       "Ace": "brainrot-top-secret",
       "Harsh7": "brainrot-top-secret",
       "Resh": "brainrot-top-secret",
@@ -2063,7 +2460,7 @@
       "Shapin": "brainrot-top-secret",
       "Joel": "brainrot-top-secret",
       "Sbaynation": "brainrot-top-secret",
-      "Pasya": "brainrot-top-secret",
+      "Pasya": "brainrot-vanga",
       "Patryk": "brainrot-top-secret",
       "IP283": "brainrot-top-secret",
       "Kamil": "brainrot-top-secret",
@@ -2072,11 +2469,16 @@
       "G4NZ": "brainrot-top-secret",
       "NoahBlox": "brainrot-top-secret",
       "Ethan": "brainrot-top-secret",
+      "Olexiano": "brainrot-top-secret",
+      "Iris": "brainrot-top-secret",
       "Ekko": "brainrot-top-secret",
       "Willozzy": "brainrot-dev",
       "Pyx": "brainrot-dev",
       "Pug": "brainrot-dev",
       "Slimy": "brainrot-slimy",
+      "Hason": "brainrot-supporter",
+      "DiamondSparkle": "brainrot-supporter",
+      "Gambler": "brainrot-gambler",
       "God Triple T": "brainrot-vanga",
       "Vanga": "brainrot-vanga"
     };
@@ -2101,6 +2503,9 @@
       "brainrot-vanga": "accent-vanga",
       "brainrot-dev": "accent-dev",
       "brainrot-slimy": "accent-slimy",
+      "brainrot-discord-mod": "accent-discord-mod",
+      "brainrot-supporter": "accent-supporter",
+      "brainrot-gambler": "accent-gambler",
       "brainrot-rainbow": "accent-rainbow",
       "brainrot-top-secret": "accent-top-secret"
     };
@@ -2126,6 +2531,9 @@
       "brainrot-top-secret": { order: 18, label: "Helper", className: "brainrot-top-secret" },
       "brainrot-dev": { order: 19, label: "Dev", className: "brainrot-dev" },
       "brainrot-slimy": { order: 19, label: "Dev", className: "brainrot-slimy" },
+      "brainrot-gambler": { order: 19, label: "Gambler", className: "brainrot-gambler" },
+      "brainrot-discord-mod": { order: 19, label: "Discord Mod", className: "brainrot-discord-mod" },
+      "brainrot-supporter": { order: 19, label: "Supporter", className: "brainrot-supporter" },
       "brainrot-vanga": { order: 20, label: "G.O.A.T", className: "brainrot-vanga" }
     };
 
@@ -2151,18 +2559,23 @@
       "NoahBlox": ["noah", "noahbloxholder"],
       "Cheesebrgr": ["cheeseburger"],
       "Ethan": ["ethqw", "ethqw11", "ethan11"],
+      "Olexiano": ["olex", "olexiano1133"],
+      "Iris": ["yasser", "yasser32104"],
       "Blingo Tentacolo": ["kraken"]
     };
 
     const verifiedBrainrots = new Set(["Willozzy", "Pyx", "Pug", "Slimy"]);
+    const discordModBrainrots = new Set(["Willi"]);
+    const supporterBrainrots = new Set(["Hason", "DiamondSparkle"]);
     const goatLabels = new Set(["G.O.A.T"]);
-    const secretLikeLabels = new Set(["Helper", "Top Secret", "Dev", "G.O.A.T"]);
+    const secretLikeLabels = new Set(["Helper", "Top Secret", "Dev", "Discord Mod", "Supporter", "Gambler", "G.O.A.T"]);
 
     const darkTextAccents = new Set([
       "accent-light-yellow",
       "accent-yellow-orange",
       "accent-wave-sun",
-      "accent-rainbow"
+      "accent-rainbow",
+      "accent-gambler"
     ]);
 
     const state = {
@@ -2175,7 +2588,13 @@
       selectedPercentBrainrot: null,
       language: "en",
       potatoLevel: "off",
-      notifiedTimers: new Set()
+      notifiedTimers: new Set(),
+      timerRang: new Set(),
+      history: JSON.parse(localStorage.getItem("brainrotHistory") || "[]"),
+      historyOpen: false,
+      chanceOpen: false,
+      fromRandom: false,
+      theme: "dark"
     };
 
     const activeVangaTimers = new Map();
@@ -2202,6 +2621,10 @@
       mutationsGrid: document.getElementById("mutationsGrid"),
       calculateBtn: document.getElementById("calculateBtn"),
       randomBtn: document.getElementById("randomBtn"),
+      historyBtn: document.getElementById("historyBtn"),
+      chanceBtn: document.getElementById("chanceBtn"),
+      settingsShell: document.getElementById("settingsShell"),
+      settingsTrigger: document.getElementById("settingsTrigger"),
       languageSelect: document.getElementById("languageSelect"),
       potatoControl: document.getElementById("potatoControl"),
       potatoToggle: document.getElementById("potatoToggle"),
@@ -2216,7 +2639,9 @@
       percentResult: document.getElementById("percentResult"),
       levelDown: document.getElementById("levelDown"),
       levelUp: document.getElementById("levelUp"),
-      levelMaxLabel: document.getElementById("levelMaxLabel")
+      levelMaxLabel: document.getElementById("levelMaxLabel"),
+      streakCount: document.getElementById("streakCount"),
+      streakFire: document.getElementById("streakFire")
     };
 
     const i18n = {
@@ -2230,7 +2655,8 @@
         calculatePercent: "Calculate % Brainrot", searchPercent: "Search percent brainrot...", noMatches: "No matching stats found.",
         unavailable: "Unavailable", days: "d", hours: "h", minutes: "m", seconds: "s", aaMorning: "1st AA", aaEvening: "2nd AA",
         tacoTuesday: "Taco Tuesday (SCRAPPED)", potatoLevel: "Potato Level", potatoHelp: "Makes it less laggier for bad devices",
-        notify: "Notify", notifyDesc: "Notifies you when the timer ends"
+        notify: "Notify", notifyDesc: "Notifies you when the timer ends", testLabel: "[TEST]", history: "Brainrot Calculate History",
+        theme: "Theme", lightTheme: "Light", darkTheme: "Dark"
       },
       ms: { inputs: "Input", invalid: "Tidak sah", ready: "Sedia", language: "Bahasa", random: "Rawak", listSize: "Saiz senarai", small: "Kecil", medium: "Sederhana", large: "Besar", baseStat: "Stat Asas", mutationTotal: "Jumlah Mutasi", stacked: "terkumpul", rank: "Rank", rankHint: "+15% setiap rank", level: "Tahap", levelHint: "+50% setiap tahap selepas 1", bonuses: "Bonus", bonusHint: "Tekan untuk tukar. Peratusan terkumpul.", traits: "Trait", mutations: "Mutasi", calculateStat: "Kira Stat", finalStat: "Stat Akhir", rankMultiplier: "Pengganda rank", levelMultiplier: "Pengganda tahap", mutationMultiplier: "Pengganda mutasi", formula: "Asas × semua pengganda", percentBrainrot: "Brainrot Peratus", calculatePercent: "Kira % Brainrot", searchPercent: "Cari brainrot peratus...", noMatches: "Tiada stat sepadan.", unavailable: "Tidak tersedia", days: "h", hours: "j", minutes: "m", seconds: "s", aaMorning: "AA pertama", aaEvening: "AA kedua", tacoTuesday: "Taco Tuesday (DIBATALKAN)" },
       fil: { inputs: "Inputs", invalid: "Hindi pwede", ready: "Handa", language: "Wika", random: "Random", listSize: "Laki ng listahan", small: "Maliit", medium: "Katamtaman", large: "Malaki", baseStat: "Base Stat", mutationTotal: "Kabuuang Mutation", stacked: "naka-stack", rank: "Rank", rankHint: "+15% bawat rank", level: "Level", levelHint: "+50% bawat level pagkatapos ng 1", bonuses: "Bonuses", bonusHint: "I-tap para i-toggle. Naiipon ang percentages.", traits: "Traits", mutations: "Mutations", calculateStat: "Kalkulahin Stat", finalStat: "Final Stat", rankMultiplier: "Rank multiplier", levelMultiplier: "Level multiplier", mutationMultiplier: "Mutation multiplier", formula: "Base × lahat ng multiplier", percentBrainrot: "Percent Brainrot", calculatePercent: "Kalkulahin % Brainrot", searchPercent: "Hanap percent brainrot...", noMatches: "Walang tugmang stat.", unavailable: "Hindi available", days: "d", hours: "o", minutes: "m", seconds: "s", aaMorning: "1st AA", aaEvening: "2nd AA", tacoTuesday: "Taco Tuesday (SCRAPPED)" },
@@ -2402,7 +2828,8 @@
     }
 
     function renderBrainrotNameMarkup(name, colorClass) {
-      if (colorClass !== "brainrot-vanga" && colorClass !== "brainrot-top-secret" && colorClass !== "brainrot-dev" && colorClass !== "brainrot-slimy") {
+      const sparkleClasses = new Set(["brainrot-vanga", "brainrot-top-secret", "brainrot-dev", "brainrot-slimy", "brainrot-discord-mod", "brainrot-supporter", "brainrot-gambler"]);
+      if (!sparkleClasses.has(colorClass)) {
         return name;
       }
 
@@ -2412,9 +2839,14 @@
 
       const sparkleType = colorClass === "brainrot-top-secret"
         ? "top-secret"
-        : (colorClass === "brainrot-dev" || colorClass === "brainrot-slimy") ? "verified" : "vanga";
+        : (colorClass === "brainrot-dev" || colorClass === "brainrot-slimy") ? "verified"
+        : colorClass === "brainrot-discord-mod" ? "discord"
+        : colorClass === "brainrot-supporter" ? "supporter"
+        : colorClass === "brainrot-gambler" ? "gambler" : "vanga";
       const badge = verifiedBrainrots.has(name) ? `<span class="verified-badge">✓</span>` : "";
-      return `<span class="vanga-host" data-vanga-text="${sparkleType}">${letters}${badge}</span>`;
+      const discordBadge = discordModBrainrots.has(name) ? `<span class="discord-badge">D</span>` : "";
+      const supporterBadge = supporterBrainrots.has(name) ? `<span class="supporter-badge"></span>` : "";
+      return `<span class="vanga-host" data-vanga-text="${sparkleType}">${letters}${badge}${discordBadge}${supporterBadge}</span>`;
     }
 
     function clearVangaSparkleTimers() {
@@ -2434,14 +2866,22 @@
       const sparkle = document.createElement("span");
       const isTopSecret = host.dataset.vangaText === "top-secret";
       const isVerified = host.dataset.vangaText === "verified";
-      sparkle.className = `vanga-sparkle${isTopSecret ? " square-sparkle" : ""}${isVerified ? " verified-sparkle" : ""}`;
+      const isDiscord = host.dataset.vangaText === "discord";
+      const isSupporter = host.dataset.vangaText === "supporter";
+      const isGambler = host.dataset.vangaText === "gambler";
+      sparkle.className = `vanga-sparkle${isTopSecret || isGambler ? " square-sparkle" : ""}${isVerified || isDiscord ? " verified-sparkle" : ""}`;
       sparkle.style.left = `${letter.offsetLeft + (letter.offsetWidth / 2) - 3}px`;
       sparkle.style.top = `${Math.max(0, letter.offsetTop + (letter.offsetHeight / 2) - 3)}px`;
       sparkle.style.setProperty("--sparkle-x", `${randomBetween(-28, 28).toFixed(1)}px`);
       sparkle.style.setProperty("--sparkle-y", `${randomBetween(-28, 28).toFixed(1)}px`);
       sparkle.style.background = isTopSecret
-        ? "rgba(141,56,216,0.95)"
-        : isVerified ? "#1d9bf0" : Math.random() > 0.45 ? "rgba(255,255,255,0.96)" : "rgba(143,228,255,0.88)";
+        ? "rgba(93,28,150,0.95)"
+        : isVerified ? "#1d9bf0"
+        : isDiscord ? "#5865f2"
+        : isSupporter ? "#f47fff"
+        : isGambler ? "#ffb02e"
+        : Math.random() > 0.45 ? "rgba(255,255,255,0.96)" : "rgba(143,228,255,0.88)";
+      if (isDiscord) sparkle.textContent = "D";
       host.appendChild(sparkle);
 
       window.setTimeout(() => {
@@ -2529,6 +2969,7 @@
       clearAccentClasses(els.mutationMultiplier);
       clearAccentClasses(els.formulaValue);
       els.calculateBtn.style.color = "";
+      els.calculateBtn.classList.toggle("no-selection", !state.selectedStat);
       applyVangaSparkles(els.baseStat, false);
       applyVangaSparkles(els.finalStat, false);
       applyVangaSparkles(els.finalUnit, false);
@@ -2654,9 +3095,9 @@
           }
           state.rank = i;
           invalidateCalculatedResult();
+          emitBrainrotSplash(button);
           renderRanks();
           calculate();
-          emitBrainrotSplash(button);
         });
         els.rankSelector.appendChild(button);
       }
@@ -2684,7 +3125,7 @@
         item.style.setProperty("--bonus-step", getSelectedBonusStripeSize());
         item.innerHTML = `
           <span class="mutation-content">
-            <span class="mutation-name">${name}</span>
+            <span class="mutation-name">${translateBonusName(name)}</span>
             <span class="mutation-bonus">+${bonus}%</span>
           </span>
         `;
@@ -2722,6 +3163,20 @@
       return i18n[state.language] || i18n.en;
     }
 
+    const bonusTranslations = {
+      ms: { Golden: "Emas", Diamond: "Berlian", Rainbow: "Pelangi", Giant: "Gergasi", Snowy: "Bersalji", Sakura: "Sakura", Tornado: "Puting Beliung", Stinky: "Busuk", Lightning: "Kilat", Taco: "Taco", Meteor: "Meteor", Blackhole: "Lubang Hitam", Radioactive: "Radioaktif", Galaxy: "Galaksi", Magmatic: "Magma", Disco: "Disko", "Fishing Master": "Master Memancing", "Ligma (Joke)": "Ligma (Gurauan)" },
+      fil: { Golden: "Ginto", Diamond: "Brilyante", Rainbow: "Bahaghari", Giant: "Higante", Snowy: "May Niyebe", Sakura: "Sakura", Tornado: "Buhawi", Stinky: "Mabaho", Lightning: "Kidlat", Taco: "Taco", Meteor: "Meteor", Blackhole: "Blackhole", Radioactive: "Radioactive", Galaxy: "Galaxy", Magmatic: "Magma", Disco: "Disco", "Fishing Master": "Fishing Master", "Ligma (Joke)": "Ligma (Joke)" },
+      de: { Golden: "Gold", Diamond: "Diamant", Rainbow: "Regenbogen", Giant: "Riese", Snowy: "Schnee", Tornado: "Tornado", Stinky: "Stinkend", Lightning: "Blitz", Blackhole: "Schwarzes Loch", Radioactive: "Radioaktiv", Galaxy: "Galaxie", Magmatic: "Magma", "Fishing Master": "Angelmeister", "Ligma (Joke)": "Ligma (Witz)" },
+      es: { Golden: "Dorado", Diamond: "Diamante", Rainbow: "Arcoiris", Giant: "Gigante", Snowy: "Nevado", Tornado: "Tornado", Stinky: "Apestoso", Lightning: "Rayo", Blackhole: "Agujero Negro", Radioactive: "Radiactivo", Galaxy: "Galaxia", Magmatic: "Magmatico", "Fishing Master": "Maestro de Pesca", "Ligma (Joke)": "Ligma (Broma)" },
+      it: { Golden: "Dorato", Diamond: "Diamante", Rainbow: "Arcobaleno", Giant: "Gigante", Lightning: "Fulmine", Blackhole: "Buco Nero", Galaxy: "Galassia", "Fishing Master": "Maestro Pesca", "Ligma (Joke)": "Ligma (Scherzo)" },
+      pt: { Golden: "Dourado", Diamond: "Diamante", Rainbow: "Arco-iris", Giant: "Gigante", Lightning: "Raio", Blackhole: "Buraco Negro", Galaxy: "Galaxia", "Fishing Master": "Mestre da Pesca", "Ligma (Joke)": "Ligma (Piada)" },
+      tr: { Golden: "Altin", Diamond: "Elmas", Rainbow: "Gokkusagi", Giant: "Dev", Lightning: "Yildirim", Blackhole: "Kara Delik", Galaxy: "Galaksi", "Fishing Master": "Balik Ustasi", "Ligma (Joke)": "Ligma (Saka)" }
+    };
+
+    function translateBonusName(name) {
+      return bonusTranslations[state.language]?.[name] || name;
+    }
+
     function applyTranslations() {
       const t = getCurrentT();
       document.querySelectorAll("[data-i18n]").forEach((node) => {
@@ -2737,6 +3192,8 @@
         }
       });
       updateTimers();
+      renderBonusGrid(els.traitsGrid, traits, "trait");
+      renderBonusGrid(els.mutationsGrid, mutations, "mutation");
       if (els.results.classList.contains("show")) updateSearchResults(els.search.value);
       if (els.percentResults.classList.contains("show")) updatePercentResults(els.percentSearch.value);
     }
@@ -2746,14 +3203,11 @@
     }
 
     function getQualityLabel(value) {
-      if (value > 5000000000000) return "Ur lying gng";
-      if (value > 2500000000000) return "Leaderboard";
-      if (value > 1000000000000) return "Getting started";
-      if (value >= 500000000000) return "PRO";
-      if (value < 100) return "Nub";
-      if (value < 450) return "Mid";
-      if (value < 500000000000) return "Lil Pro";
-      return "PRO";
+      if (value >= 10000000000000) return "Ur lying gng";
+      if (value >= 2500000000000) return "Leaderboard";
+      if (value >= 1000000000000) return "PRO";
+      if (value < 500000000000) return "Getting started";
+      return "Nub";
     }
 
     function emitBrainrotSplash(target) {
@@ -2876,18 +3330,62 @@
       emitBrainrotSplash(els.calculatePercentBtn);
     }
 
+    function saveHistoryName(name) {
+      if (!name || state.fromRandom) return;
+      state.history = [name, ...state.history.filter((item) => item !== name)].slice(0, 18);
+      localStorage.setItem("brainrotHistory", JSON.stringify(state.history));
+    }
+
+    function renderHistoryList() {
+      state.historyOpen = true;
+      state.chanceOpen = false;
+      els.results.innerHTML = `<div class="history-list">${
+        state.history.length
+          ? state.history.map((name) => `<div class="search-option"><span>${name}</span></div>`).join("")
+          : `<div class="empty-state">No history yet.</div>`
+      }</div>`;
+      els.results.classList.add("show");
+      els.searchWrap.classList.add("open");
+    }
+
+    function renderChanceList() {
+      state.chanceOpen = true;
+      state.historyOpen = false;
+      const chances = [
+        ["Gambler", "1/40"],
+        ["Helper", "1/35"],
+        ["Discord Mod", "1/50"],
+        ["Supporter", "1/65"],
+        ["Dev", "1/75"],
+        ["G.O.A.T", "1/100"]
+      ];
+      els.results.innerHTML = `<div class="chance-list">${chances.map(([name, chance]) =>
+        `<div class="search-option"><span>${name}</span><span class="subtle">${chance}</span></div>`
+      ).join("")}</div>`;
+      els.results.classList.add("show");
+      els.searchWrap.classList.add("open");
+    }
+
+    function pickFromPool(predicate, fallbackPool = []) {
+      const pool = baseStats.filter((item) => predicate(item) && !item.unavailable);
+      const source = pool.length ? pool : fallbackPool;
+      return source[Math.floor(Math.random() * source.length)];
+    }
+
     function pickRandomBrainrot() {
-      const topSecretStats = baseStats.filter((item) => item.secretLabel === "Top Secret" || item.secretLabel === "Helper");
       const visibleStats = baseStats.filter((item) => !item.hiddenExact && !item.unavailable);
-      const roll = Math.random();
-      let pool = visibleStats;
-      if (roll < 0.01) {
-        pool = baseStats.filter((item) => item.name === "Vanga");
-      } else if (roll < 0.03 && topSecretStats.length) {
-        pool = topSecretStats;
-      }
-      const picked = pool[Math.floor(Math.random() * pool.length)];
+      let picked = null;
+      if (Math.random() < 1 / 100) picked = pickFromPool((item) => item.secretLabel === "G.O.A.T", visibleStats);
+      else if (Math.random() < 1 / 90) picked = pickFromPool((item) => item.name === "Slimy", visibleStats);
+      else if (Math.random() < 1 / 75) picked = pickFromPool((item) => item.secretLabel === "Dev", visibleStats);
+      else if (Math.random() < 1 / 65) picked = pickFromPool((item) => item.secretLabel === "Supporter" || item.name === "Joel" || item.name === "Patryk", visibleStats);
+      else if (Math.random() < 1 / 55) picked = pickFromPool((item) => item.name === "Shapin", visibleStats);
+      else if (Math.random() < 1 / 50) picked = pickFromPool((item) => item.secretLabel === "Discord Mod", visibleStats);
+      else if (Math.random() < 1 / 40) picked = pickFromPool((item) => item.secretLabel === "Gambler", visibleStats);
+      else if (Math.random() < 1 / 35) picked = pickFromPool((item) => item.secretLabel === "Helper" || item.secretLabel === "Top Secret", visibleStats);
+      if (!picked) picked = visibleStats[Math.floor(Math.random() * visibleStats.length)];
       state.selectedStat = picked;
+      state.fromRandom = true;
       state.rank = Math.floor(randomBetween(0, 5));
       state.level = Math.floor(randomBetween(1, 101));
       state.selectedMutations = new Set();
@@ -2932,6 +3430,14 @@
       for (const [key, target] of Object.entries(targets)) {
         const node = document.querySelector(`[data-timer="${key}"]`);
         if (node) node.innerHTML = formatCountdown(target);
+        const remaining = target.getTime() - Date.now();
+        if (state.notifiedTimers.has(key) && remaining <= 1100 && !state.timerRang.has(key)) {
+          playNotifySound();
+          state.timerRang.add(key);
+        }
+        if (remaining > 5000) {
+          state.timerRang.delete(key);
+        }
       }
     }
 
@@ -2988,6 +3494,7 @@
           if (!match.unavailable || match.secretLabel) {
             option.addEventListener("click", () => {
               state.selectedStat = match;
+              state.fromRandom = false;
               state.hasCalculated = false;
               if (state.level < 1) state.level = 1;
               els.search.value = match.name;
@@ -3012,6 +3519,8 @@
     }
 
     function updateSearchResults(query) {
+      state.historyOpen = false;
+      state.chanceOpen = false;
       const normalized = query.trim().toLowerCase();
       const secretExact = isSecretExactQuery(normalized);
       const matches = baseStats
@@ -3181,6 +3690,7 @@
       const typedValue = event.target.value.trim();
       if (!typedValue || (state.selectedStat && typedValue !== state.selectedStat.name)) {
         state.selectedStat = null;
+        state.fromRandom = false;
         state.hasCalculated = false;
         state.rank = 0;
         state.level = 0;
@@ -3205,6 +3715,7 @@
     els.clear.addEventListener("click", () => {
       els.search.value = "";
       state.selectedStat = null;
+      state.fromRandom = false;
       state.hasCalculated = false;
       state.rank = 0;
       state.level = 0;
@@ -3222,10 +3733,31 @@
       }
       state.hasCalculated = true;
       calculate();
+      saveHistoryName(state.selectedStat.name);
       emitBrainrotSplash(els.calculateBtn);
     });
 
     els.randomBtn.addEventListener("click", pickRandomBrainrot);
+
+    els.historyBtn.addEventListener("click", () => {
+      if (state.historyOpen) {
+        state.historyOpen = false;
+        els.results.classList.remove("show");
+        els.searchWrap.classList.remove("open");
+        return;
+      }
+      renderHistoryList();
+    });
+
+    els.chanceBtn.addEventListener("click", () => {
+      if (state.chanceOpen) {
+        state.chanceOpen = false;
+        els.results.classList.remove("show");
+        els.searchWrap.classList.remove("open");
+        return;
+      }
+      renderChanceList();
+    });
 
     els.percentSearch.addEventListener("input", (event) => {
       state.selectedPercentBrainrot = null;
@@ -3260,6 +3792,49 @@
       els.potatoControl.classList.remove("open");
     });
 
+    function setTheme(theme) {
+      state.theme = theme;
+      document.body.classList.toggle("theme-light", theme === "light");
+      document.querySelectorAll("[data-theme]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.theme === theme);
+      });
+      localStorage.setItem("calculatorTheme", theme);
+    }
+
+    function setupStreak() {
+      const today = new Date().toISOString().slice(0, 10);
+      const yesterdayDate = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+      const stored = JSON.parse(localStorage.getItem("calculatorStreak") || "{}");
+      let count = Number(stored.count || 0);
+      if (stored.last === today) {
+        count = Math.max(0, count);
+      } else if (stored.last === yesterdayDate) {
+        count += 1;
+      } else {
+        count = 0;
+      }
+      localStorage.setItem("calculatorStreak", JSON.stringify({ last: today, count }));
+      els.streakCount.textContent = String(count);
+      els.streakFire.classList.remove("blue", "yellow", "purple");
+      if (count >= 10) els.streakFire.classList.add("purple");
+      else if (count >= 5) els.streakFire.classList.add("yellow");
+      else if (count >= 3) els.streakFire.classList.add("blue");
+    }
+
+    els.settingsTrigger.addEventListener("click", () => {
+      els.settingsShell.classList.toggle("open");
+    });
+
+    document.querySelectorAll("[data-theme]").forEach((button) => {
+      button.addEventListener("click", () => setTheme(button.dataset.theme));
+    });
+
+    document.addEventListener("pointermove", (event) => {
+      if (state.potatoLevel !== "off") return;
+      document.body.style.setProperty("--mouse-x", `${event.clientX}px`);
+      document.body.style.setProperty("--mouse-y", `${event.clientY}px`);
+    });
+
     document.querySelectorAll("[data-notify]").forEach((button) => {
       button.addEventListener("click", () => {
         const key = button.dataset.notify;
@@ -3270,7 +3845,6 @@
         }
         state.notifiedTimers.add(key);
         button.textContent = "On";
-        playNotifySound();
       });
     });
 
@@ -3285,6 +3859,9 @@
       if (!event.target.closest("#potatoControl")) {
         els.potatoControl.classList.remove("open");
       }
+      if (!event.target.closest("#settingsShell")) {
+        els.settingsShell.classList.remove("open");
+      }
     });
 
     renderRanks();
@@ -3292,6 +3869,8 @@
     renderBonusGrid(els.mutationsGrid, mutations, "mutation");
     applySearchSize("medium");
     applyTranslations();
+    setupStreak();
+    setTheme(localStorage.getItem("calculatorTheme") || "dark");
     setPotatoLevel("off");
     window.setInterval(updateTimers, 1000);
     calculate();
