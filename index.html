@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Boxing Ring</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      background: #f4f4f4;
+      font-family: Arial, sans-serif;
+    }
+
+    .button {
+      width: 280px;
+      max-width: calc(100vw - 32px);
+      height: 38px;
+      border: 2px solid #111827;
+      border-radius: 18px;
+      background: #f5f7fb;
+      color: #111827;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #111827;
+      transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+    }
+
+    .button:hover {
+      background: #ffffff;
+    }
+
+    .button:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #111827;
+    }
+
+    .panel-button {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+    }
+
+    .panel {
+      position: fixed;
+      top: 66px;
+      right: 16px;
+      width: 280px;
+      max-width: calc(100vw - 32px);
+      height: auto;
+      max-height: calc(100vh - 82px);
+      border: 2px solid #111;
+      border-radius: 18px;
+      background: #fff;
+      display: none;
+      padding: 18px;
+      overflow: auto;
+    }
+
+    .panel.is-open {
+      display: grid;
+      align-content: start;
+      gap: 14px;
+    }
+
+    .panel .button {
+      width: 100%;
+      max-width: none;
+    }
+
+    .stage {
+      display: grid;
+      justify-items: center;
+      gap: 24px;
+    }
+
+    .ring {
+      position: relative;
+      width: min(78vmin, 620px);
+      aspect-ratio: 1;
+      border: 12px solid #111;
+      border-radius: 28px;
+      background: #fff;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    .fighter-piece,
+    .drag-preview {
+      --piece-size: clamp(72px, 15vmin, 120px);
+      width: calc(var(--piece-size) * var(--piece-scale, 1));
+      aspect-ratio: 1;
+      user-select: none;
+    }
+
+    .fighter-piece {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      display: grid;
+      place-items: center;
+    }
+
+    .fighter-piece img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .fighter-piece img,
+    .drag-preview {
+      pointer-events: none;
+    }
+
+    .drag-preview {
+      position: fixed;
+      z-index: 10;
+      opacity: 0.92;
+      transform: translate(-50%, -50%);
+    }
+
+    .remove-fighter {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 26px;
+      height: 26px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      background: #dc2626;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 900;
+      line-height: 20px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 2px 0 #7f1d1d;
+    }
+
+    .text-fighter {
+      display: grid;
+      place-items: center;
+      width: clamp(86px, 17vmin, 134px);
+      min-height: 54px;
+      padding: 8px;
+      border: 2px solid #111827;
+      border-radius: 18px;
+      background: #f5f7fb;
+      color: #111827;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.1;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <button class="button panel-button" type="button" aria-expanded="false" aria-controls="panel">Panel</button>
+  <aside class="panel" id="panel" aria-label="Panel">
+    <button class="button brainrot-button" type="button" data-character="tralalero">Tralalero Tralala</button>
+    <button class="button brainrot-button" type="button" data-character="bombardiro">Bombardiro Crocodilo</button>
+    <button class="button brainrot-button" type="button" data-character="patapim">Brr Brr Patapim</button>
+    <button class="button brainrot-button" type="button" data-character="chimpanzini">Chimpanzini Bananini</button>
+    <button class="button brainrot-button" type="button" data-character="ballerina">Ballerina Cappucina</button>
+    <button class="button brainrot-button" type="button" data-character="tung">Tung Tung Tung Sahur</button>
+    <button class="button brainrot-button" type="button" data-character="chicleteira">Chicleteira Bicicleteira</button>
+  </aside>
+  <main class="stage">
+    <div class="ring" aria-label="Boxing ring"></div>
+    <button class="button start-button" type="button">Start</button>
+  </main>
+  <script>
+    const button = document.querySelector(".panel-button");
+    const panel = document.querySelector(".panel");
+    const ring = document.querySelector(".ring");
+    const characters = {
+      tralalero: {
+        name: "Tralalero Tralala",
+        image: "assets/tralalero.png",
+        scale: 1,
+      },
+      bombardiro: {
+        name: "Bombardiro Crocodilo",
+        image: "assets/bombardiro.png",
+        scale: 0.98,
+      },
+      patapim: {
+        name: "Brr Brr Patapim",
+        image: "assets/patapim.png",
+        scale: 0.72,
+      },
+      chimpanzini: {
+        name: "Chimpanzini Bananini",
+        image: "assets/chimpanzini.png",
+        scale: 0.82,
+      },
+      ballerina: {
+        name: "Ballerina Cappucina",
+        image: "assets/ballerina.png",
+        scale: 0.76,
+      },
+      tung: {
+        name: "Tung Tung Tung Sahur",
+        image: "assets/tung.png",
+        scale: 0.78,
+      },
+      chicleteira: {
+        name: "Chicleteira Bicicleteira",
+        image: "assets/chicleteira.png",
+        scale: 0.78,
+      },
+    };
+    let activeDrag = null;
+
+    button.addEventListener("click", () => {
+      const isOpen = panel.classList.toggle("is-open");
+      button.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    document.querySelectorAll(".brainrot-button").forEach((brainrotButton) => {
+      brainrotButton.addEventListener("pointerdown", (event) => {
+        event.preventDefault();
+        startDrag(brainrotButton.dataset.character, event.clientX, event.clientY);
+      });
+    });
+
+    window.addEventListener("pointermove", (event) => {
+      if (!activeDrag) return;
+      movePreview(event.clientX, event.clientY);
+    });
+
+    window.addEventListener("pointerup", (event) => {
+      if (!activeDrag) return;
+      finishDrag(event.clientX, event.clientY);
+    });
+
+    function startDrag(id, x, y) {
+      const character = characters[id];
+      const preview = createCharacterElement(id, true);
+      document.body.append(preview);
+      activeDrag = { id, character, preview };
+      movePreview(x, y);
+    }
+
+    function movePreview(x, y) {
+      activeDrag.preview.style.left = `${x}px`;
+      activeDrag.preview.style.top = `${y}px`;
+    }
+
+    function finishDrag(x, y) {
+      const ringRect = ring.getBoundingClientRect();
+      const isInside = x >= ringRect.left && x <= ringRect.right && y >= ringRect.top && y <= ringRect.bottom;
+
+      activeDrag.preview.remove();
+
+      if (isInside) {
+        placeCharacter(activeDrag.id, x - ringRect.left, y - ringRect.top);
+      }
+
+      activeDrag = null;
+    }
+
+    function placeCharacter(id, x, y) {
+      const corner = nearestCorner(x, y, id);
+
+      if (!corner) return;
+
+      const fighter = createCharacterPiece(id);
+      const slot = availableSlot(corner, id);
+
+      if (!slot) return;
+
+      fighter.dataset.corner = corner.id;
+      fighter.style.left = `${slot.x}px`;
+      fighter.style.top = `${slot.y}px`;
+      ring.append(fighter);
+    }
+
+    function nearestCorner(x, y, id) {
+      const size = ring.clientWidth;
+      const inset = Math.max(56, size * 0.14);
+      const corners = [
+        { id: "top-left", x: inset, y: inset, xDirection: 1, yDirection: 1 },
+        { id: "top-right", x: size - inset, y: inset, xDirection: -1, yDirection: 1 },
+        { id: "bottom-left", x: inset, y: size - inset, xDirection: 1, yDirection: -1 },
+        { id: "bottom-right", x: size - inset, y: size - inset, xDirection: -1, yDirection: -1 },
+      ].filter((corner) => availableSlot(corner, id));
+
+      if (!corners.length) return null;
+
+      const closest = corners.reduce((current, corner) => {
+        const currentDistance = Math.hypot(x - current.x, y - current.y);
+        const cornerDistance = Math.hypot(x - corner.x, y - corner.y);
+        return cornerDistance < currentDistance ? corner : current;
+      });
+      const snapRange = Math.max(34, size * 0.09);
+      const distance = Math.hypot(x - closest.x, y - closest.y);
+
+      return distance <= snapRange ? closest : null;
+    }
+
+    function availableSlot(corner, id) {
+      const size = ring.clientWidth;
+      const pieceSize = Math.min(Math.max(72, size * 0.15), 120);
+      const targetSize = pieceSize * (characters[id]?.scale || 1);
+      const step = pieceSize * 0.78;
+      const existing = [...ring.querySelectorAll(".fighter-piece")].map((piece) => ({
+        x: parseFloat(piece.style.left),
+        y: parseFloat(piece.style.top),
+        size: pieceSize * (parseFloat(piece.style.getPropertyValue("--piece-scale")) || 1),
+      }));
+
+      for (let row = 0; row < 5; row += 1) {
+        for (let column = 0; column < 5; column += 1) {
+          const x = corner.x + column * step * corner.xDirection;
+          const y = corner.y + row * step * corner.yDirection;
+          const inBounds = x > targetSize / 2 && x < size - targetSize / 2 && y > targetSize / 2 && y < size - targetSize / 2;
+          const overlaps = existing.some((piece) => Math.hypot(piece.x - x, piece.y - y) < (piece.size + targetSize) * 0.36);
+
+          if (inBounds && !overlaps) {
+            return { x, y };
+          }
+        }
+      }
+
+      return null;
+    }
+
+    function createCharacterPiece(id) {
+      const character = characters[id];
+      const piece = document.createElement("div");
+      piece.className = "fighter-piece";
+      piece.dataset.placedCharacter = id;
+      piece.style.setProperty("--piece-scale", character.scale || 1);
+
+      const fighter = createCharacterElement(id, false);
+      const remove = document.createElement("button");
+      remove.className = "remove-fighter";
+      remove.type = "button";
+      remove.setAttribute("aria-label", `Remove ${characters[id].name}`);
+      remove.textContent = "X";
+      remove.addEventListener("click", () => piece.remove());
+
+      piece.append(fighter, remove);
+      return piece;
+    }
+
+    function createCharacterElement(id, isPreview) {
+      const character = characters[id];
+
+      if (character.image) {
+        const image = document.createElement("img");
+        image.className = isPreview ? "drag-preview" : "";
+        if (isPreview) {
+          image.style.setProperty("--piece-scale", character.scale || 1);
+        }
+        image.src = character.image;
+        image.alt = character.name;
+        return image;
+      }
+
+      const token = document.createElement("div");
+      token.className = isPreview ? "drag-preview text-fighter" : "text-fighter";
+      if (isPreview) {
+        token.style.setProperty("--piece-scale", character.scale || 1);
+      }
+      token.textContent = character.name;
+      return token;
+    }
+  </script>
+</body>
+</html>
